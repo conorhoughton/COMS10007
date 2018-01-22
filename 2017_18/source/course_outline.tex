@@ -163,16 +163,17 @@
 \path (gra) edge[<->,line width=1pt](ase);
 \path (gra) edge[<->,line width=1pt](sth);
 
-\node[data,text height=0.35cm,below = 2cm of gra](btr){binary trees};
+\node[data,text height=0.35cm,below = 2cm of gra](btr){data};
 
 
 \node[data,text height=0.35cm,right = 2cm of btr](atr){avl trees};
-\node[data,text height=0.35cm,below right = 1cm of btr](bhe){binary heaps};
+%\node[data,text height=0.35cm,below right = 1cm of btr](bhe){binary heaps};
+\node[data,text height=0.35cm,below right = 1cm of btr](has){hashing};
 
 
 \path (gra) edge[->,line width=3pt](btr);
 \path (btr) edge[<->,line width=1pt](atr);
-\path (btr) edge[<->,line width=1pt](bhe);
+\path (btr) edge[<->,line width=1pt](has);
 
 \node[science,text height=0.35cm,below = 2cm of btr](sci){science};
 
@@ -229,9 +230,10 @@ big-oh node might be two lectures.
 \item \textbf{\textcolor{yellow}{some theory:}} Some definitions and the Euler theorem. 
 \item \textbf{\textcolor{yellow}{dikstra:}} Dijkskra's algorithm.
 \item \textbf{\textcolor{yellow}{adversarial:}} Adversarial search algorithms.
-\item \textbf{\textcolor{green}{binary trees:}} Data structures, linked lists and binary trees.
+\item \textbf{\textcolor{green}{data:}} Data structures, linked lists and binary trees.
 \item \textbf{\textcolor{green}{avl trees:}} Balanced trees and the AVL rotations. 
-\item \textbf{\textcolor{green}{binary heap:}} Binary heaps. 
+%\item \textbf{\textcolor{green}{binary heap:}} Binary heaps. 
+\item \textbf{\textcolor{green}{hashing:}} Hash functions and hashing data. 
 \item \textbf{\textcolor{orange}{science:}} Scientific computing.
 \item \textbf{\textcolor{orange}{some math:}} Revising a bit of calculus.
 \item \textbf{\textcolor{orange}{simplex:}} The Nelder Meade algorithm.
