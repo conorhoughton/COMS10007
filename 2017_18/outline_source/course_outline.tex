@@ -116,36 +116,36 @@
 \node[intro,text height=0.35cm](int){introduction};
 \node[intro,text height=0.35cm,right = 2cm of int](bse){insert};
 
-\path (int) edge[<->,line width=2pt](bse);
+\path (int) edge[<->,line width=1pt](bse);
 
 \node[big-oh,text height=0.35cm,below = 2cm of int](boh){big-oh};
 \node[big-oh,text height=0.35cm,left = 2cm of boh](lim){limits};
 \node[big-oh,text height=0.35cm,below left = 1cm of boh](rma){recursive eqns};
 
-\path (int) edge[->,line width=2pt](boh);
-\path (boh) edge[<->,line width=2pt](rma);
+\path (int) edge[->,line width=3pt](boh);
+\path (boh) edge[<->,line width=1pt](rma);
 
 \node[big-oh,text height=0.35cm,above right = 1cm of boh](sea){search};
 \node[big-oh,text height=0.35cm,right = 2cm of boh](rec){recursion};
 \node[big-oh,text height=0.35cm,below right = 1cm of boh](fib){fibonacci};
 
-\path (boh) edge[<->,line width=2pt](lim);
+\path (boh) edge[<->,line width=1pt](lim);
 
-\path (boh) edge[<->,line width=2pt](sea);
-\path (boh) edge[<->,line width=2pt](rec);
-\path (boh) edge[<->,line width=2pt](fib);
+\path (boh) edge[<->,line width=1pt](sea);
+\path (boh) edge[<->,line width=1pt](rec);
+\path (boh) edge[<->,line width=1pt](fib);
 
 \node[big-oh,text height=0.35cm,below = 2cm of boh](mas){master};
 
-\path (boh) edge[->,line width=2pt](mas);
+\path (boh) edge[->,line width=3pt](mas);
 
 \node[sorting,text height=0.35cm,right = 2cm of mas](qso){quicksort};
 \node[sorting,text height=0.35cm,below = 0.5cm of qso](mso){merge};
 \node[sorting,text height=0.35cm,below = 0.5cm of mso](rso){radix};
 
-\path (mas) edge[->,line width=2pt](qso);
-\path (qso) edge[->,line width=2pt](mso);
-\path (mso) edge[->,line width=2pt](rso);
+\path (mas) edge[->,line width=3pt](qso);
+\path (qso) edge[->,line width=3pt](mso);
+\path (mso) edge[->,line width=3pt](rso);
 
 \node[left = 3.25cm of rso](null){};
 
@@ -153,15 +153,15 @@
 \node[graph,text height=0.35cm,below = 1cm of null](gra){graphs};
 \node[graph,text height=0.35cm,left = 2cm of gra](sth){some theory};
 
-\draw[->,rounded corners=5pt,line width=2pt] (rso)-|(gra);
+\draw[->,rounded corners=5pt,line width=3pt] (rso)-|(gra);
 
 
 \node[graph,text height=0.35cm,right = 2cm of gra](dij){dijkstra};
 \node[graph,text height=0.35cm,below right = 1cm of gra](ase){adversarial};
 
-\path (gra) edge[<->,line width=2pt](dij);
-\path (gra) edge[<->,line width=2pt](ase);
-\path (gra) edge[<->,line width=2pt](sth);
+\path (gra) edge[<->,line width=1pt](dij);
+\path (gra) edge[<->,line width=1pt](ase);
+\path (gra) edge[<->,line width=1pt](sth);
 
 \node[data,text height=0.35cm,below = 2cm of gra](btr){binary trees};
 
@@ -170,9 +170,9 @@
 \node[data,text height=0.35cm,below right = 1cm of btr](bhe){binary heaps};
 
 
-\path (gra) edge[->,line width=2pt](btr);
-\path (btr) edge[<->,line width=2pt](atr);
-\path (btr) edge[<->,line width=2pt](bhe);
+\path (gra) edge[->,line width=3pt](btr);
+\path (btr) edge[<->,line width=1pt](atr);
+\path (btr) edge[<->,line width=1pt](bhe);
 
 \node[science,text height=0.35cm,below = 2cm of btr](sci){science};
 
@@ -183,10 +183,10 @@
 \node[sciencefaded,text height=0.35cm,below right = 1cm of sci](mcmc){\textcolor{gray}{mcmc}};
 
 
-\path (btr) edge[->,line width=2pt](sci);
-\path (sci) edge[<->,line width=2pt](sim);
-\path (sci) edge[<->,line width=2pt](sma);
-\path (sci) edge[<->,line width=2pt,color=gray](mcmc);
+\path (btr) edge[->,line width=3pt](sci);
+\path (sci) edge[<->,line width=1pt](sim);
+\path (sci) edge[<->,line width=1pt](sma);
+\path (sci) edge[<->,line width=1pt,color=gray](mcmc);
 
 
 \end{tikzpicture}
