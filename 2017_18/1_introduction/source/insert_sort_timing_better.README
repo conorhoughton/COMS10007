@@ -1,0 +1,5 @@
+This is another version of insert_sort_timing.c, it makes all the
+trials=500 arrays for a given n at the start so that the begin and end
+times can be calculated for all trials before working out
+timing_spent, I thought this might be more accurate for small values
+of n, but it didn't seem to make much difference.

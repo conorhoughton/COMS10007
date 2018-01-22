@@ -1,0 +1,37 @@
+
+One simple way to product plots is to use gnuplot. To do this you need
+the data organized in a space seperated text file, here is an extract from the file insert_sort_timings.txt 
+
+562 0.260000
+563 0.250000
+564 0.260000
+565 0.270000
+566 0.270000
+567 0.260000
+568 0.270000
+569 0.270000
+
+On a linux machine a quick way to get numbers into a file is using a "pipe". Say the executable is called "foo" then
+
+./foo > foo_data.txt
+
+will divert the screen output for foo into the file foo_data.txt
+
+To plot foo_data.txt in gnuplot use the command gnuplot from the command line and then
+
+plot "foo_data.txt" using 1:2 with lines
+
+will plot the data, using the first and second column and joining the
+data points with lines.
+
+replot x^2 
+
+will plot x^2 on the same graph.
+
+set terminal eps
+set output "foo_data.eps"
+replot
+set terminal wxt
+replot
+
+will save the same graph as an eps file.

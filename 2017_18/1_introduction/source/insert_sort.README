@@ -1,0 +1,10 @@
+1) Notice one oddity of the arrays in C; they act like pointers, so the
+function passes by reference, not by copy.
+
+2) The function is prototyped, the function prototype, giving the name, arguments and return type is given ahead of main, but the function itself is given afterwards. The variable names need not appear in the prototype, it could read
+
+void sort(int [], int);
+
+Some people do it like that, since that makes more sense, others put
+variable names in since, if there is a convention for variable names,
+they give a reminder of what the variables are.

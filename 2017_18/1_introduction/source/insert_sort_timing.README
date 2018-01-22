@@ -1,0 +1,7 @@
+1) The package time.h has stuff for timing, this comes with its own
+data type, clock_t, this gets cast to a double when calculating
+time_spent
+
+2) Sort is too quick for the precision of timing, so I do 1000
+trials. Hopefully this will average over some of the background
+fluctuations in run speed because of background processes.
