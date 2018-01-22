@@ -1,6 +1,6 @@
 %1_introduction.tex
-%notes for the course PandA1 COMS10001 taught at the University of Bristol
-%2016 Conor Houghton conor.houghton@bristol.ac.uk
+%notes for the course Algorithms COMS10007 taught at the University of Bristol
+%2017_18 Conor Houghton conor.houghton@bristol.ac.uk
 
 %To the extent possible under law, the author has dedicated all copyright 
 %and related and neighboring rights to these notes to the public domain 
@@ -14,7 +14,7 @@
 \usepackage{color}
 \lstset{language=C}
 \pagestyle{headings}
-\markright{COMS10001 - PandA2 1\_introduction - Conor}
+\markright{COMS10007 1\_introduction (a/b, start of c) - Conor}
 \begin{document}
 
 \section*{1: Introduction}
@@ -99,7 +99,7 @@ example of insertion sort is given in Table~\ref{tab_insertsort}.
   from the unsorted deck; in practice this isn't needed, the sorted
   and unsorted elements can be stored in the same array with an index
   or pointer used to remember where one stops and the other
-  starts. Consider, for example, steps {\bf 7} to {\bf 10} where the
+  starts. Consider, for example, steps \textbf{ 7} to \textbf{ 10} where the
   value 1 is moved to the sorted deck and then compared with each of
   the sorted values until it reaches the 0, since the 0 is a lower
   value than 1 the 1 isn't swapped with it and the algorithm goes on
@@ -236,7 +236,7 @@ order terms, the $n$ term and the constant, aren't important.
   value of $n$ and the $y$-axis gives the total run time in seconds on
   my laptop, while I was also doing other things like typing this
   document and playing music videos on youtube. The code for doing the
-  timing test is {\tt insert\_sort\_timing.c}. The $n^2$ behavior is
+  timing test is \texttt{  insert\_sort\_timing.c}. The $n^2$ behavior is
   clearly visible and the curve $0.88(n/1000)^2$ is plotted too, this
   was fitted by eye but is so good a fit it is hard to see it behind
   the run time data.\label{fig_insert_sort_timing}}
@@ -294,7 +294,7 @@ behavior is, at worst, like $n^2$.
 Specifically, the definition of $O(g(n)$, called \lq{}big oh\rq{} of
 $g(n)$, is
 \begin{equation}
-O(g(n))=\{f(n)| \exists n_0>0\in {\bf N}\mbox{ and }c>0\in {\bf R}\mbox{ with }|f(n)|\le c|g(n)|\,\forall n\ge n_0\}
+O(g(n))=\{f(n)| \exists n_0>0\in \textbf{ N}\mbox{ and }c>0\in \textbf{ R}\mbox{ with }|f(n)|\le c|g(n)|\,\forall n\ge n_0\}
 \end{equation}
 This definition is quite dense, but we can break it down: it says that
 $O(g(n))$ is a set of functions, the curly brackets mean
@@ -306,8 +306,8 @@ where $f(n)$ has the property on the right of the $|$. Now,
 \lq{}$\forall$\rq{} means \lq{}for all\rq{}, so the defining property
 says it is possible to find a positive natural number $n_0$ and a
 positive real number $c$ so that if you choose a value of $n$ at
-least as big as $n_0$ then $f(n)$ is no bigger than $cg(n)$, ${\bf N}$
-and ${\bf R}$ stand for the natural and real numbers. Notice the
+least as big as $n_0$ then $f(n)$ is no bigger than $cg(n)$, $\textbf{ N}$
+and $\textbf{ R}$ stand for the natural and real numbers. Notice the
 absolute value signs, this is about $|f(n)|$ and $|g(n)|$, in fact,
 here we are interested in run times, so we will deal with functions
 that are non-negative, or are non-negative provided $n$ is larger than
@@ -317,12 +317,7 @@ $\log_2{n}$ is positive provided $n>1$.
 In short, $f(n)$ can do all sorts of crazy stuff for small values of
 $n$ but, if you take $n$ large enough, its behavior is bounded by the
 behavior of $g(n)$. Now it doesn't say it is bounded by $g(n)$, it is
-a statement about the behavior, that's the role of the $c$. If you
-know the formal definition of limits you can see that the definition
-of $O(g(n))$ has this wrapped up in it, if says
-\begin{equation}
-f(n)\in O(g(n))\iff \lim_{n\rightarrow \infty}\frac{f(n)}{g(n)}<\infty
-\end{equation}
+a statement about the behavior, that's the role of the $c$.
 
 Here are some examples, say 
 \begin{equation}
@@ -332,21 +327,28 @@ then
 \begin{equation}
 T(n)\in O(n^2)
 \end{equation}
-by, for example, taking $c=5+1+6=12$ then 
+This means that $T(n)$ gets big at the same rate as $n^2$. As far as the definition is concerned, it means that we can choose an $n_0$ and a $c$ so that
+\begin{equation}
+cn^2\ge 5n^2+n+6
+\end{equation}
+for all $n>n_0$; it is easy to see that this should be possible, as
+long as the $c>5$ the $n+6$ won't matter as $n$ gets large. In fact,
+by, for example, taking $c=5+1+6=12$ then
 \begin{equation}
 12n^2\ge 5n^2+n+6
 \end{equation}
-provided $n\ge 1$ so $n_0=1$ here. This could also be succinctly
-demonstrated using the limit
-\begin{equation}
-\lim_{n\rightarrow \infty} \frac{5n^2+n+6}{n^2}=\lim_{n\rightarrow \infty}5+\lim_{n\rightarrow \infty}\frac{1}{n}+\lim_{n\rightarrow \infty}\frac{6}{n^2}=5<\infty
-\end{equation}
+provided $n\ge 1$ so $n_0=1$ here. 
 
 However, 
 \begin{equation}
 T(n)\not\in O(n)
 \end{equation}
-Say we chosen some value $c$ then
+In other words, no matter what $c$ and $n_0$ we choose there will be an $n>n_0$ such that
+\begin{equation}
+cn<5n^2+n+6
+\end{equation}
+and, again, it is easy to see this might be the case. Say we chosen
+some value $c$ then
 \begin{equation}
 5n^2+n+6>cn
 \end{equation}
@@ -366,11 +368,7 @@ so, no matter what value of $c$ is chosen, making $n>5/n$ implies
 \begin{equation}
 5n^2+n+6>cn
 \end{equation}
-so $5n^2+n+6\not\in O(n)$. Again, the limit does the same job
-\begin{equation}
-\lim_{n\rightarrow \infty} \frac{5n^2+n+6}{n}=\lim_{n\rightarrow \infty}5n+\lim_{n\rightarrow \infty}1+\lim_{n\rightarrow \infty}\frac{6}{n}=\infty
-\end{equation}
-
+so $5n^2+n+6\not\in O(n)$. 
 
 In practice, if
 \begin{equation}
