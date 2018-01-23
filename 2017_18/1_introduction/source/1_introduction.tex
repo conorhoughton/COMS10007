@@ -286,12 +286,12 @@ behavior of the running time of insert sort, we said
 T(n)\in O(n^2)
 \end{equation}
 Here we want to formalize this notation. Basically $O(n^2)$ is a set
-of function, it is all the function which, for large values of $n$ go
+of functions, it is all the functions which, for large values of $n$ go
 to infinity like $n^2$ at the fastest. By saying $T(n)\in O(n^2)$ we
 are saying that $T(n)$ is one of these functions, its large $n$
 behavior is, at worst, like $n^2$. 
 
-Specifically, the definition of $O(g(n)$, called \lq{}big oh\rq{} of
+Specifically, the definition of $O(g(n))$, called \lq{}big oh\rq{} of
 $g(n)$, is
 \begin{equation}
 O(g(n))=\{f(n)| \exists n_0>0\in \textbf{ N}\mbox{ and }c>0\in \textbf{ R}\mbox{ with }|f(n)|\le c|g(n)|\,\forall n\ge n_0\}
@@ -354,7 +354,7 @@ some value $c$ then
 \end{equation}
 for large enough $n$, to check this divide both sides by $n$ so we need to show that $n$ can be chosen so that
 \begin{equation}
-5n+1+\frac{c}{n}>c
+5n+1+\frac{6}{n}>c
 \end{equation}
 Since 
 \begin{equation}
