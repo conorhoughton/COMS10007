@@ -1,0 +1,74 @@
+%2_limits.tex
+%notes for the course Algorithms COMS10007 taught at the University of Bristol
+%2017_18 Conor Houghton conor.houghton@bristol.ac.uk
+
+%To the extent possible under law, the author has dedicated all copyright 
+%and related and neighboring rights to these notes to the public domain 
+%worldwide. These notes are distributed without any warranty. 
+
+\documentclass[11pt,a4paper]{scrartcl}
+\typearea{12}
+\usepackage{graphicx}
+%\usepackage{pstricks}
+\usepackage{listings}
+\usepackage{color}
+\lstset{language=C}
+\pagestyle{headings}
+\markright{COMS10007 1\_limits (d) - Conor}
+\begin{document}
+
+\section*{2: Limits}
+
+Limits are the mathematical framework for deciding where a function is
+going as it argument approaches some value. In the case of algorithmic
+complexity, we are interested in where $T(n)$, the run time, is going,
+as $n$ gets large so here we will look at limits at infinity. The
+limit is a part of mathematics where the intuition is probably more
+straight forward than the definition, but here we will look at the
+formal definition. This is useful not so much for this course, largely
+we will be able to calculate the limits we need using simple methods,
+but because it is something that is useful to know in the future.
+
+\subsection*{Informal idea}
+
+If we write
+\begin{equation}
+\lim_{x\rightarrow \infty}f(x)=c
+\end{equation}
+where $f(x)$ is some function and $c$ a constant, we mean that $f(x)$
+heads towards infinity it gets close to $c$. Take, for example
+\begin{equation}
+f(x) = \frac{1}{x}
+\end{equation}
+it is easy to see that 
+\begin{equation}
+\lim_{x\rightarrow \infty}\frac{1}{x}=0
+\end{equation}
+because the bigger $x$ is, the smaller $1/x$ is, so $1/x$ is heading for zero. Now, lets consider 
+\begin{equation}
+f(x)=\frac{4x^2+2x+1}{2x^2+3}
+\end{equation}
+Well by dividing above and below by $x^2$ we have
+\begin{equation}
+\lim_{x\rightarrow \infty}\frac{4x^2+2x+1}{2x^2+3}=
+\lim_{x\rightarrow \infty}\frac{4+2/x+1/x^2}{2+3/x^2}=
+\lim_{x\rightarrow \infty}\frac{4}{2}=2
+\end{equation}
+because the $2/x$, $3/x^2$ and so on are getting smaller and smaller
+as $x$ gets larger so we can replace them by zeros inside the limit.
+
+Of course, many functions just get bigger and bigger, or more and more
+negative, as $x$ goes to infinity, for these we say the limit is plus
+or minus infinity, so, for example
+\begin{equation}
+\lim_{x\rightarrow \infty} x=\infty
+\end{equation}
+and
+\begin{equation}
+\lim_{x\rightarrow \infty} (-x)=-\infty
+\end{equation}
+
+
+
+\end{document}
+
