@@ -139,25 +139,25 @@
 
 \path (boh) edge[->,line width=3pt](mas);
 
-\node[sorting,text height=0.35cm,right = 2cm of mas](qso){quicksort};
+\node[sorting,text height=0.35cm, right = 2cm of mas](qso){quicksort};
 \node[sorting,text height=0.35cm,below = 0.5cm of qso](mso){merge};
-\node[sorting,text height=0.35cm,below = 0.5cm of mso](rso){radix};
+%\node[sorting,text height=0.35cm,below = 0.5cm of mso](rso){radix};
 
 \path (mas) edge[->,line width=3pt](qso);
 \path (qso) edge[->,line width=3pt](mso);
-\path (mso) edge[->,line width=3pt](rso);
+%\path (mso) edge[->,line width=3pt](rso);
 
-\node[left = 3.25cm of rso](null){};
+\node[left = 3.25cm of mso](null){};
 
 
-\node[graph,text height=0.35cm,below = 1cm of null](gra){graphs};
+\node[graph,text height=0.35cm,below = 3cm of null](gra){graphs};
 \node[graph,text height=0.35cm,left = 2cm of gra](sth){some theory};
 
-\draw[->,rounded corners=5pt,line width=3pt] (rso)-|(gra);
+\draw[->,rounded corners=5pt,line width=3pt] (mso)-|(gra);
 
 
-\node[graph,text height=0.35cm,right = 2cm of gra](dij){dijkstra};
-\node[graph,text height=0.35cm,below right = 1cm of gra](ase){adversarial};
+\node[graph,text height=0.35cm,above right = 1cm of gra](dij){dijkstra};
+\node[graph,text height=0.35cm,right = 2cm of gra](ase){adversarial};
 
 \path (gra) edge[<->,line width=1pt](dij);
 \path (gra) edge[<->,line width=1pt](ase);
@@ -165,14 +165,13 @@
 
 \node[data,text height=0.35cm,below = 2cm of gra](btr){data};
 
-
-\node[data,text height=0.35cm,right = 2cm of btr](atr){avl trees};
-%\node[data,text height=0.35cm,below right = 1cm of btr](bhe){binary heaps};
+\node[data,text height=0.35cm,above right = 1cm of btr](atr){avl trees};
+\node[data,text height=0.35cm, right = 2cm of btr](bhe){binary heaps};
 \node[data,text height=0.35cm,below right = 1cm of btr](has){hashing};
-
 
 \path (gra) edge[->,line width=3pt](btr);
 \path (btr) edge[<->,line width=1pt](atr);
+\path (btr) edge[<->,line width=1pt](bhe);
 \path (btr) edge[<->,line width=1pt](has);
 
 \node[science,text height=0.35cm,below = 2cm of btr](sci){science};
@@ -225,14 +224,14 @@ big-oh node might be two lectures.
 \item \textbf{\textcolor{red}{master:}} The master theorem.
 \item \textbf{\textcolor{blue}{quicksort:}} Quicksort.
 \item \textbf{\textcolor{blue}{merge sort:}} Merge sort.
-\item \textbf{\textcolor{blue}{radix sort:}} Radix sort.
+%\item \textbf{\textcolor{blue}{radix sort:}} Radix sort.
 \item \textbf{\textcolor{yellow}{graphs:}} Introduction to graph theory.
 \item \textbf{\textcolor{yellow}{some theory:}} Some definitions and the Euler theorem. 
 \item \textbf{\textcolor{yellow}{dikstra:}} Dijkskra's algorithm.
 \item \textbf{\textcolor{yellow}{adversarial:}} Adversarial search algorithms.
 \item \textbf{\textcolor{green}{data:}} Data structures, linked lists and binary trees.
 \item \textbf{\textcolor{green}{avl trees:}} Balanced trees and the AVL rotations. 
-%\item \textbf{\textcolor{green}{binary heap:}} Binary heaps. 
+\item \textbf{\textcolor{green}{binary heap:}} Binary heaps. 
 \item \textbf{\textcolor{green}{hashing:}} Hash functions and hashing data. 
 \item \textbf{\textcolor{orange}{science:}} Scientific computing.
 \item \textbf{\textcolor{orange}{some math:}} Revising a bit of calculus.
