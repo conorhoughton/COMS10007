@@ -24,10 +24,12 @@ going as it argument approaches some value. In the case of algorithmic
 complexity, we are interested in where $T(n)$, the run time, is going,
 as $n$ gets large so here we will look at limits at infinity. The
 limit is a part of mathematics where the intuition is probably more
-straight forward than the definition, but here we will look at the
-formal definition. This is useful not so much for this course, largely
-we will be able to calculate the limits we need using simple methods,
-but because it is something that is useful to know in the future.
+straight forward than the definition, nonetheless here we will look at
+the formal definition. This is useful not so much for this course,
+largely we will be able to calculate the limits we need using simple
+methods, but because it is something that is useful to know in the
+future and it is interesting because it demonstrates a powerful way of
+proving things that is common in some types of mathematics.
 
 \subsection*{Informal idea}
 
@@ -68,6 +70,144 @@ and
 \lim_{x\rightarrow \infty} (-x)=-\infty
 \end{equation}
 
+\subsection*{Formal definition}
+
+The informal approach to limits makes sense until you think about it,
+then it starts to get confusing: what do we mean by \lq{}$x$
+approaches infinity\rq{}, what do we mean by \lq{}gets close
+to\rq{}. The formal definition of the limit explains all of this. 
+
+We say
+\begin{equation}
+\lim_{x\rightarrow \infty}f(x)=c
+\end{equation}
+if for all $\delta>0$ there exists an $x_0$ such that for all $x>x_0$
+we have $|f(x)-c|<\delta$.
+
+What this definition is doing is this: no matter what standard of
+\lq{}close to\rq{} you set, that is, if you regard \lq{}close to
+$c$\rq{} as meaning within $\delta$ of $c$ then no matter how small a
+value of $\delta$ you choose, then $f(x)$ will eventually end up that
+close; the $x_0$ is the eventually, you can make $f(x)$ lie within
+$\delta$ of $c$ by choosing a high enough $x_0$.
+
+This style of definition is refered to as an epsilon-delta-box. You
+might ask where the epsilon is, the delta, of course, is the $\delta$:
+$\epsilon$ is used for limits that aren't at infinity, 
+\begin{equation}
+\lim_{x\rightarrow a}f(x)=c
+\end{equation}
+which we aren't looking at here. The epsilon plays a similar role to
+the $x_0$ here.
+
+There is also a definition of an infinite limit:
+We say
+\begin{equation}
+\lim_{x\rightarrow \infty}f(x)=\infty
+\end{equation}
+if for all $y>0$ there exists an $x_0$ such that for all $x>x_0$
+we have $f(x)>y$. Thus, no matter what you consider big, that is, no matter how large a $y$ you choose, $f(x)$ will eventually be bigger than it. Finally
+\begin{equation}
+\lim_{x\rightarrow \infty}f(x)=-\infty
+\end{equation}
+if for all $y<0$ there exists an $x_0$ such that for all $x>x_0$
+we have $f(x)<y$.
+
+\subsection*{How to work out limits}
+
+Limits actually have nice properties:
+\begin{equation}
+\lim_{x\rightarrow \infty}[f(x)\pm g(x)]=\lim_{x\rightarrow \infty}f(x)\pm \lim_{x\rightarrow \infty}g(x)
+\end{equation}
+where, following the usual convention, you take the $+$ in both
+$\pm$s, or the minus in both. If everything is finite:
+\begin{equation}
+\lim_{x\rightarrow \infty}[f(x)g(x)]=\left[\lim_{x\rightarrow \infty}f(x)\right]\left[\lim_{x\rightarrow \infty}g(x)\right]
+\end{equation}
+and
+\begin{equation}
+\lim_{x\rightarrow \infty}\frac{f(x)}{g(x)}=\frac{\lim_{x\rightarrow \infty}f(x)}{\lim_{x\rightarrow \infty}g(x)}
+\end{equation}
+Although we didn't mention it, we used these rules earlier when doing
+\begin{equation}
+\lim_{x\rightarrow \infty}\frac{4x^2+2x+1}{2x^2+3}=
+\lim_{x\rightarrow \infty}\frac{4+2/x+1/x^2}{2+3/x^2}=
+\lim_{x\rightarrow \infty}\frac{4}{2}=2
+\end{equation}
+What we actually did was 
+\begin{equation}
+\lim_{x\rightarrow \infty}\frac{4+2/x+1/x^2}{2+3/x^2}=
+\frac{\lim_{x\rightarrow \infty}(4+2/x+1/x^2)}{\lim_{x\rightarrow \infty}(2+3/x^2)}=
+\lim_{x\rightarrow \infty}\frac{4}{2}
+\end{equation}
+and, for example
+\begin{equation}
+\lim_{x\rightarrow \infty} (4+2/x+1/x^2)=\lim_{x\rightarrow \infty} 4+\lim_{x\rightarrow \infty}2/x+\lim_{x\rightarrow \infty}1/x^2
+\end{equation}
+
+The other method for calculating limits is l'H\^{o}pital's rule. If 
+\begin{equation}
+\lim_{x\rightarrow \infty}f(x)=\lim_{x\rightarrow \infty}g(x)=\infty
+\end{equation}
+then
+\begin{equation}
+\lim_{x\rightarrow \infty}\frac{f(x)}{g(x)}=\frac{\lim_{x\rightarrow \infty} f(x)}{\lim_{x\rightarrow \infty} g(x)}
+\end{equation}
+doesn't tell us anything since the right hand side is just infinity
+over infinity and we did say above the business with products and
+fractions only applies if everything is finite. However in this case a
+rule called l'H\^{o}pital's rule.\footnote{Which was discovered by
+  Johann Bernoulli; he gave l'H\^{o}pital permission to include it in
+  a book and was then \textsl{very} annoyed when he found that people
+  thought it was l'H\^{o}pital's idea.} L'H\^{o}pital's rule says that
+\begin{equation}
+\lim_{x\rightarrow \infty}\frac{f(x)}{g(x)}=\lim_{x\rightarrow \infty}\frac{f'(x)}{g'(x)}
+\end{equation}
+where 
+\begin{equation}
+f'(x)=\frac{df}{dx}(x)
+\end{equation}
+and similar for $g'(x)$. In other words, if the top and the bottom
+both have infinity limits then differentiating the top and the bottom
+doesn't change the limit. 
+
+You might wonder why you'd want to differenciate the top and the
+bottom, in fact that can sometimes simplify the limit; this is
+important for an example we need for algorithmic complexity, calculating
+\begin{equation}
+\lim_{x\rightarrow \infty}\frac{\log{x}}{x}
+\end{equation}
+Now, $\lim_{x\rightarrow\infty}\log{x}=\infty$ and $\lim_{x\rightarrow \infty}x=\infty$ so we can apply l'H\^{o}pital's rule:
+\begin{equation}
+\lim_{x\rightarrow \infty}\frac{\log{x}}{x}=\lim_{x\rightarrow \infty}\frac{1/x}{1}=\lim_{x\rightarrow \infty}\frac{1}{x}=0
+\end{equation}
+This tells us that although $\log{x}$ goes to infinity it goes to
+infinity slower than $x$.
+
+\subsection*{Relationship to big-Oh}
+
+Recall the definition of $O(g(n)$, called \lq{}big oh\rq{} of
+$g(n)$, is
+\begin{equation}
+O(g(n))=\{f(n)| \exists n_0>0\in \mathbf{ N}\mbox{ and }c>0\in \mathbf{R}\mbox{ with }|f(n)|\le c|g(n)|\,\forall n\ge n_0\}
+\end{equation}
+You can see that the definition of $O(g(n))$ has this wrapped up in
+it, if says
+\begin{equation}
+f(n)\in O(g(n))\iff \lim_{n\rightarrow \infty}\frac{f(n)}{g(n)}<\infty
+\end{equation}
+Or, put another way, either $f(n)$ goes to infinity slower than
+$g(n)$, or at the same speed.
+
+Lets look at the example we saw before:
+\begin{equation}
+T(n)=5n^2+n+6
+\end{equation}
+we can see
+\begin{equation}
+\lim_{x\rightarrow \infty}\frac{5n^2+n+6}{n^2}=5<\infty
+\end{equation}
+so $T(n)\in O(g(n))$.
 
 
 \end{document}
