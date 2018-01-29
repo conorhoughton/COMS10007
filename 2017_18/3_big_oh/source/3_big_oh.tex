@@ -1,0 +1,170 @@
+%3_big_oh.tex
+%notes for the course COMS10007 taught at the University of Bristol
+%2017/18 Conor Houghton conor.houghton@bristol.ac.uk
+
+%To the extent possible under law, the author has dedicated all copyright 
+%and related and neighboring rights to these notes to the public domain 
+%worldwide. These notes are distributed without any warranty. 
+
+\documentclass[11pt,a4paper]{scrartcl}
+\typearea{12}
+\usepackage{graphicx}
+%\usepackage{pstricks}
+\usepackage{listings}
+\usepackage{color}
+\lstset{language=C}
+\pagestyle{headings}
+\markright{COMS10007 - algorithms 3\_big\_oh - Conor}
+\begin{document}
+
+\subsection*{3 Big Oh notation}
+
+To recap, the definition of $O(g(n)$, called \lq{}big oh\rq{} of
+$g(n)$, is
+\begin{equation}
+O(g(n))=\{f(n)| \exists n_0>0\in {\bf N}\mbox{ and }c>0\in {\bf R}\mbox{ with }|f(n)|\le c|g(n)|\,\forall n\ge n_0\}
+\end{equation}
+or, equivalently
+\begin{equation}
+f(n)\in O(g(n))\iff \lim_{n\rightarrow \infty}\frac{f(n)}{g(n)}<\infty
+\end{equation}
+
+In practice, if
+\begin{equation}
+T(n)=a_rn^r+a_{r-1}n^{r-1}+\ldots+a_1n+a_0
+\end{equation}
+then $T(n)\in O(n^r)$. 
+
+As we saw, the logarithm has the funny property that it goes to infinity, but it
+does so slower than $n$:
+\begin{equation}
+\lim_{n\rightarrow \infty}\frac{\log_2{n}}{n}=0
+\end{equation}
+Now, just as $\log_2{n}$ grows very slowly, $2^n$
+grows very fast,
+\begin{equation}
+\lim_{n\rightarrow \infty}\frac{n^r}{2^n}=0
+\end{equation}
+for any finite value of $r$, worse still is $n!$, pronounced $n$-factorial
+\begin{equation}
+n!=n(n-1)(n-2) . . . 1
+\end{equation}
+If your algorithm is in $O(n!)$ you will probably need a different
+algorithm. A table of different values is given as
+Table~\ref{table_n_values}, mostly to emphasis how quickly $n!$ gets
+big.
+
+Now, in mathematics we call something \lq{}an abuse of notation\rq{}
+if it is common to write something that doesn't quite make sense but
+acts as a shorthand for something that does. Now $O(g(n))$ is a set of
+functions whose large $n$ behavior is bounded by $g(n)$ so in
+algorithms, being in $O(g(n))$ is a property of $T(n)$, the formula
+for the running time of the algorithm. However, it is a standard abuse
+of notation to say an algorithm is $O(g(n))$ for some $g(n)$ if
+$T(n)\in O(g(n))$ for all cases. This is another way of saying that
+the worst behavior of the algorithm isn't any worse than the behavior
+of $g(n)$ for large $n$ so all possible $T(n)$ are elements of
+$O(g(n))$. Finding $O(g(n))$ for an algorithm will be refered to as
+\lq{}finding the big-oh complexity\rq{}. In the context of a more precise approach to the topic we might talk about \lq{}finding the asymptotic complexity\rq{}.
+
+
+\begin{figure}
+\include{exp}
+\caption{This shows $2^x$ and $x^2-1$ plots for $x\in[0,6]$, clearly $2^x$ quickly overtakes $x^2+1$, this will happen for any power of $x$. \label{fig_exp}}
+\end{figure}
+
+\begin{table}
+\begin{tabular}{l|cccccc}
+        $n$    &1   &2&4   &16  &128&1024\\
+$\log{n}$      &0   &1&2   &4   &7  &10\\
+$n\log{n}$     &0   &2&8   &64  &896&10240\\
+$n^2$     &1   &4&16&256&16384&1048576\\
+$2^n$     &2   &4&16&65536&$3.4\times 10^{38}$&$1.8\times 10^{307}$\\
+$n!$      &1   &2&24&$2.1\times 10^{13}$&$3.85\times 10^{305}$&$5.4\times10^{2369}$
+\end{tabular}
+\vskip 1cm The website\\ {\tt
+  http://markknowsnothing.com/cgi-bin/calculator.php}\\ was used for
+the $2^n$ calculations and\\ {\tt
+  http://www.calculatorsoup.com/calculators/discretemathematics/factorials.php}\\ for
+the $n!$ calculations; these give answers even when the answer is very
+large. Another easy way to calculate with large numbers is to use Python.
+
+\caption{Different values of $n$ for some functions.  \label{table_n_values}
+}
+\end{table}
+
+\subsubsection*{Other big Letter notations, small oh notation.}
+
+There is another set, $\Omega(g(n))$ with a definition similar to
+$O(g(n))$ that is used for describing the best case behavior. This
+requires a lower bound rather than an upper bound, so the obvious
+definition is
+\begin{equation}
+\Omega(g(n))=\{f(n)| \exists n_0>0\in {\bf N}\mbox{ and }c>0\in {\bf R}\mbox{ with }|f(n)|\ge c|g(n)|\,\forall n\ge n_0\}
+\end{equation}
+or
+\begin{equation}
+f(n)\in \Omega(g(n))\iff \lim_{n\rightarrow \infty}\frac{f(n)}{g(n)}>0
+\end{equation}
+in other words, the same thing, but with the $\le$ symbol replaced by
+a $\ge$. In fact, there is some ambiguity about this definition,
+number theorist use a slightly different one. Either way, it isn't
+used very often in computer science because algorithms are very
+frequently $\Omega(1)$; in the best case scenario the problem is in
+some sense already solved, the array already sorted for example, and
+the algorithm finishes in one step. 
+
+There is also a set of function that are both bounded above and below
+by the same $g(n)$
+\begin{equation}
+\Theta(g(n))=\Omega(g(n))\cap O(g(n))
+\end{equation}
+This works because it is possible for
+\begin{equation}
+c_1 g(n)\le f(n)\le c_2g(n)
+\end{equation}
+for different $c_1$ and $c_2$. It would be very unusual for this to
+apply to an algorithm, it would mean that $T(n)$ has the same behavior
+for large $n$ no matter whether it is the best case or the worst case
+scenario. There is a na\"ive largest element function in
+Table~\ref{c_largest_linear_search} which is $\Theta(n)$. It searches
+for the largest value in an unsorted array by looking at each element
+in turn. In fact, for a completely unsorted array this is the best
+algorithm, but, in practice, if finding the largest element in a set
+is an important and frequent procedure, a special data structure,
+called a heap, is used to keep track of which element is largest.
+
+\begin{table}
+\begin{lstlisting}[numbers=left]
+int search(int a[],int n)
+{
+   int i;
+   int best_val=a[0];
+
+   for(i=1;i<n;i++){
+      if(a[i]>best_val)
+         best_val= a[i];
+   }
+
+  return best_val;
+}
+\end{lstlisting}
+\caption{Search for the largest element in an unsorted list. This
+  function searches all the elements to see which is the largest, the
+  inner loop always runs $n-1$ times since it doesn't know until it
+  has looked at every element which is going to be the largest. This
+  program is implemented as {\tt
+    find\_largest.c}.\label{c_largest_linear_search}.}
+\end{table}
+
+Finally, little oh notation is a stricter version of big Oh notation
+that is used in some more mathematical context, basically $f(n)\in
+o(g(n))$ is $f(n)$ is less than $cg(n)$ for any choice of $c$, if $n$
+is large enough:
+\begin{equation}
+o(g(n))=\{f(n)| \exists n_0>0\in {\bf N}\mbox{ so that }|f(n)|\ge
+c|g(n)|\,\forall n\ge n_0 \mbox{ and }\forall\,c>0\in {\bf R}\}
+\end{equation}
+
+
+\end{document}
