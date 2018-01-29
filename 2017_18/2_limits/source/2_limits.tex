@@ -15,6 +15,7 @@
 \lstset{language=C}
 \pagestyle{headings}
 \markright{COMS10007 1\_limits (d) - Conor}
+\definecolor{dark-gray}{gray}{0.25}
 \begin{document}
 
 \section*{2: Limits}
@@ -175,14 +176,78 @@ You might wonder why you'd want to differenciate the top and the
 bottom, in fact that can sometimes simplify the limit; this is
 important for an example we need for algorithmic complexity, calculating
 \begin{equation}
-\lim_{x\rightarrow \infty}\frac{\log{x}}{x}
+\lim_{x\rightarrow \infty}\frac{\log_2{x}}{x}
 \end{equation}
 Now, $\lim_{x\rightarrow\infty}\log{x}=\infty$ and $\lim_{x\rightarrow \infty}x=\infty$ so we can apply l'H\^{o}pital's rule:
 \begin{equation}
-\lim_{x\rightarrow \infty}\frac{\log{x}}{x}=\lim_{x\rightarrow \infty}\frac{1/x}{1}=\lim_{x\rightarrow \infty}\frac{1}{x}=0
+\lim_{x\rightarrow \infty}\frac{\log_2{x}}{x}=\lim_{x\rightarrow \infty}\frac{1/x}{1}=\lim_{x\rightarrow \infty}\frac{1}{x}=0
 \end{equation}
-This tells us that although $\log{x}$ goes to infinity it goes to
-infinity slower than $x$.
+This tells us that although $\log_2{x}$ goes to infinity it goes to
+infinity slower than $x$.  This is illustrated in a plot,
+Fig.~\ref{fig_log}. Here, by the way, in line with standard
+practice in computer science, we are using the log to the base two, in
+fact changing bases only causes a change of an overall constant, see
+Table~\ref{math_logs} for a reminder of the properties of the log.
+
+\begin{table}
+\color{dark-gray}
+The logarithm is the opposite of the exponent: if
+\begin{equation}
+a^b=c
+\end{equation}
+then 
+\begin{equation}
+\log_a{c}=b
+\end{equation}
+or, written in one line
+\begin{equation}
+a^{\log_a{c}}=c
+\end{equation}
+All the laws of logs can be worked out from the laws of
+exponents. Hence, since $a^0=1$ we have $\log_a{1}=0$. In a similar
+way, other rules of logs can be deduced like
+\begin{eqnarray}
+\log_a{c_1c_2}&=&\log_a{c_1}+\log_a{c_2}\cr
+\log_a{\frac{c_1}{c_2}}&=&\log_a{c_1}-\log_a{c_2}\cr
+\log_a c^d&=&d\log_a c
+\end{eqnarray}
+and so on.
+
+As for the change of base, let $b=\log_{a_1}{c}$ so $a_1^{b}=c$. Now take the log to the base $a_2$ of both sides
+\begin{equation}
+b\log_{a_2}a_1=\log_{a_2}{c}
+\end{equation}
+and then solve for $b$
+\begin{equation}
+b=\frac{\log_{a_2}c}{\log_{a_2}a_1}
+\end{equation}
+and, substituting back the formula for $b$
+\begin{equation}
+\log_{a_1}{c}=\frac{\log_{a_2}c}{\log_{a_2}a_1}
+\end{equation}
+Thus we see, that changing bases is just a matter of a
+multiplicative factor. For example, to change from base $e$ to base two
+\begin{equation}
+\log_{2}{x}=\frac{\log_e{x}}{\log_e{2}}\approx\frac{\log_e{x}}{0.6931}
+\end{equation}
+Common bases are $\log_2{x}$ used in computer science, $\log_e{x}$
+sometimes written $\ln{x}$ used in mathematics and $\log_{10}{x}$ used
+in chemistry. The base two is used because of its link to bits and
+also, as we will see, because of its relationship with algorithms that
+divide data into two piles. The natural log $\ln{x}$ is used where
+differential equations are common since
+\begin{equation}
+\frac{d}{dx}\ln{x}=\frac{1}{x}
+\end{equation}
+\caption{A reminder about logarithms. This is a quick summary of some of the laws of logs.\label{math_logs}}
+\color{black}
+\end{table}
+
+\begin{figure}
+\include{log}
+\caption{This shows $\log_2{x}$ and $x-1$ plots for $x\in[1,4]$, the one has been taken from $x$ to make them easier to compare, the key point is that the $x$ grows faster.\label{fig_log}}
+\end{figure}
+
 
 \subsection*{Relationship to big-Oh}
 
