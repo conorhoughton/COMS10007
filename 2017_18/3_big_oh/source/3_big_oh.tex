@@ -108,13 +108,13 @@ f(n)\in \Omega(g(n))\iff \lim_{n\rightarrow \infty}\frac{f(n)}{g(n)}>0
 \end{equation}
 in other words, the same thing, but with the $\le$ symbol replaced by
 a $\ge$. In fact, there is some ambiguity about this definition,
-number theorist use a slightly different one. Either way, it isn't
+number theorists use a slightly different one. Either way, it isn't
 used very often in computer science because algorithms are very
 frequently $\Omega(1)$; in the best case scenario the problem is in
 some sense already solved, the array already sorted for example, and
 the algorithm finishes in one step. 
 
-There is also a set of function that are both bounded above and below
+There is also a set of functions that are both bounded above and below
 by the same $g(n)$
 \begin{equation}
 \Theta(g(n))=\Omega(g(n))\cap O(g(n))
@@ -159,10 +159,10 @@ int search(int a[],int n)
 
 Finally, little oh notation is a stricter version of big Oh notation
 that is used in some more mathematical context, basically $f(n)\in
-o(g(n))$ is $f(n)$ is less than $cg(n)$ for any choice of $c$, if $n$
+o(g(n))$ is $f(n)$ is greater than $cg(n)$ for any choice of $c$, if $n$
 is large enough:
 \begin{equation}
-o(g(n))=\{f(n)| \exists n_0>0\in {\bf N}\mbox{ so that }|f(n)|\ge
+o(g(n))=\{f(n)| \exists n_0>0\in {\bf N}\mbox{ so that }|f(n)|>
 c|g(n)|\,\forall n\ge n_0 \mbox{ and }\forall\,c>0\in {\bf R}\}
 \end{equation}
 
