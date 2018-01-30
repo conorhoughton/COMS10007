@@ -176,18 +176,23 @@ You might wonder why you'd want to differenciate the top and the
 bottom, in fact that can sometimes simplify the limit; this is
 important for an example we need for algorithmic complexity, calculating
 \begin{equation}
-\lim_{x\rightarrow \infty}\frac{\log_2{x}}{x}
+\lim_{x\rightarrow \infty}\frac{\ln{x}}{x}
 \end{equation}
-Now, $\lim_{x\rightarrow\infty}\log{x}=\infty$ and $\lim_{x\rightarrow \infty}x=\infty$ so we can apply l'H\^{o}pital's rule:
+Now, $\lim_{x\rightarrow\infty}\ln{x}=\infty$ and $\lim_{x\rightarrow \infty}x=\infty$ so we can apply l'H\^{o}pital's rule:
 \begin{equation}
-\lim_{x\rightarrow \infty}\frac{\log_2{x}}{x}=\lim_{x\rightarrow \infty}\frac{1/x}{1}=\lim_{x\rightarrow \infty}\frac{1}{x}=0
+\lim_{x\rightarrow \infty}\frac{\ln{x}}{x}=\lim_{x\rightarrow \infty}\frac{1/x}{1}=\lim_{x\rightarrow \infty}\frac{1}{x}=0
 \end{equation}
-This tells us that although $\log_2{x}$ goes to infinity it goes to
+This tells us that although $\ln{x}$ goes to infinity it goes to
 infinity slower than $x$.  This is illustrated in a plot,
-Fig.~\ref{fig_log}. Here, by the way, in line with standard
-practice in computer science, we are using the log to the base two, in
-fact changing bases only causes a change of an overall constant, see
-Table~\ref{math_logs} for a reminder of the properties of the log.
+Fig.~\ref{fig_log}. Here, by the way, we are using
+\begin{equation}
+\ln{x}=\log_e{x}
+\end{equation}
+the natural log because it is more convenient for differenciation,
+however, in compter science the log to the base two, $\log_2{x}$ is
+more common, in fact changing bases only causes a change of an overall
+constant, see Table~\ref{math_logs} for a reminder of the properties
+of the log.
 
 \begin{table}
 \color{dark-gray}
