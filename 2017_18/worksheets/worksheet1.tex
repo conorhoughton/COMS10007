@@ -1,0 +1,136 @@
+%worksheet1.tex
+%problem set for the course COMS10007 taught at the University of Bristol
+%2018 Conor Houghton conor.houghton@bristol.ac.uk
+
+%To the extent possible under law, the author has dedicated all copyright 
+%and related and neighboring rights to these notes to the public domain 
+%worldwide. These notes are distributed without any warranty. 
+
+
+
+\documentclass[11pt,a4paper]{scrartcl}
+\typearea{12}
+\usepackage{graphicx}
+\usepackage{pstricks}
+\usepackage{listings}
+\usepackage{color}
+
+\newif\ifanswers
+\answersfalse
+%\answerstrue
+
+
+
+\lstset{language=C}
+\pagestyle{headings}
+\markright{COMS10001 - algorithms worksheet 1 - Conor}
+\begin{document}
+
+\subsection*{Algorithms Worksheet 1}
+
+For each part of a question write the answer and include workings. Q1
+is worth four marks, the other two are worth two marks each. There are
+also two marks for attendance.
+
+\begin{enumerate}
+
+\item This question is about estimating the algorithmic complexity of
+  evaluating a polynomial. Here, consider fixed sized variables, so
+  multiplication and addition take roughly one step, irrespective of
+  how many digits the number has. Once again, powers are calculated by
+  multiplication and we are working out how many steps it takes to
+  work out $p(x)$ when we are given some $x$ value, say $x=x_0$.
+
+\begin{enumerate}
+\item What is the big-oh complexity of evaluating, that is finding the
+  value of $p(x_0)$, of an order $n$ polynomial
+$$p(x)=a_n x^n +a_{n-1}x^{n-1}+\ldots+a_1x+a_0$$
+using straight-forward substitution?
+\item Horner's method is a quicker method for evaluating a
+  polynomial. If $x_o$ is the value that the polynomial needs to be
+  evaluated on, let $b_n=a_n$ and then 
+$$ b_{n-1}=a_{n-1}+x_o b_{n}$$
+and
+$$ b_{n-2}=a_{n-2}+x_0 b_{n-1}$$
+right down to 
+$$ b_0=a_0+x_0b_1$$ and you could check that $b_0=p(x_0)$ is the
+answer. You don't have to check that, the question here is what is the
+big-oh complexity of this algorithm?
+\end{enumerate}
+
+\ifanswers 
+
+\noindent Solution: So calculating $x^i$ is $i-1$ multiplications, there are
+faster ways to work out powers, but you are told that they are
+calculated by multiplication; multiplying by $a_i$ is one more, so
+that is $i$ calculations, thus evaluating the polynomial is
+$1+2+3+\ldots n$ multiplications, along with $n-1$ additions; thus
+this is $\Theta(n^2)$. However, using Horner's method each $b_i$ is a few calculations and there are $n$ $b_i$s, so that means it is $\Theta(n)$.
+
+\fi
+
+\item This question is about the asymptotic behavior of
+  different functions, in each case give big-Theta for $T(n)$; if
+  $T(n)$ was the worst case run-time this would give big-Oh. There is
+  no need to give any working for this problem. 
+
+\begin{enumerate}
+
+\item $T(n)=n^5+\frac{1}{n}+n(n-1)(n+2)^4$
+\item $T(n)=2^n+n!$
+\item $T(n)=\sum_{i=0}^ni$
+\item $T(n)=\sqrt{n}n+n$
+\item $T(n)=(n^5+345n^4+36n)/(n^2+2n+1)$
+\item $T(n)=1/(n^2+2n+1)$
+\item $T(n)=[(n+1)(n+2)(n+3)]/[(n+4)(n+5)]$
+\item $T(n)=n!/(n-1)!$
+\end{enumerate}
+
+\ifanswers 
+
+\noindent Solution: So just take the leading term in $n$ each time
+
+\begin{enumerate}
+
+\item $\Theta(n^6)$
+\item $\Theta(n!)$
+\item $\Theta(n^2)$
+\item $\Theta(\sqrt{n}n)$
+\item $\Theta(n^3)$
+\item $\Theta(1)$
+\item $\Theta(n)$
+\item $\Theta(n)$
+\end{enumerate}
+\fi
+
+\item Show that 
+$$
+\lim_{x\rightarrow\infty}\frac{\ln{\ln{x}}}{\ln{x}}=0
+$$
+where $\ln\ln{x}$ is a common way to write $\ln(\ln(x))$. It might be useful to recall the chain rule 
+$$
+\frac{df(v(x))}{dx}=\frac{df}{dv}\frac{dv}{dx}
+$$ for example, in this case $v=\log{x}$ and $f(v)=\ln{v}$ so
+$f(v(x))=\ln{\ln{x}}$. You should also recall that $d\ln{x}/dx=1/x$. The
+point of this question is that it shows
+$$
+O(\log{\log{n}}) \subset O(\log{n})
+$$
+
+
+\ifanswers
+
+So 
+$$
+\frac{d\ln{\ln{x}}}{dx}=\frac{d\ln{\ln{x}}}{d\ln{x}}\frac{d{\ln{x}}}{dx}=\frac{1}{\ln{x}}\frac{1}{x}
+$$
+hence, by L'H\^{o}pidal's rule
+$$
+\lim_{x\rightarrow\infty}\frac{\ln{\ln{x}}}{\ln{x}}=\lim_{x\rightarrow\infty}\frac{1}{\ln{x}}=0
+$$
+
+\fi
+
+\end{enumerate}
+
+\end{document}
