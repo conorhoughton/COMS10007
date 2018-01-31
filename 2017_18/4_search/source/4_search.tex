@@ -1,0 +1,139 @@
+%3_search.tex
+%notes for the course PandA1 COMS10001 taught at the University of Bristol
+%2016 Conor Houghton conor.houghton@bristol.ac.uk
+
+%To the extent possible under law, the author has dedicated all copyright 
+%and related and neighboring rights to these notes to the public domain 
+%worldwide. These notes are distributed without any warranty. 
+
+
+\documentclass[11pt,a4paper]{scrartcl}
+\typearea{12}
+\usepackage{graphicx}
+\usepackage{pstricks}
+\usepackage{listings}
+\usepackage{color}
+\lstset{language=C}
+\pagestyle{headings}
+\markright{COMS10001 - PandA2 3\_search - Conor}
+\begin{document}
+
+\subsection*{3 Search: linear and binary search example}
+
+Lets do a quick example of working out big oh: searching for the index
+of an element in a sorted list. A completely terrible way to do this
+is linear search, this is terrible because it doesn't make use of the
+fact that the list is sorted. A code listing is given in
+Table~\ref{c_linear_search}. We can see straight away that the code
+between lines 6 and 10 is run $n$ times in the worst case, everything
+else is run once and so this algorithm is $O(n)$.
+
+\begin{table}
+\begin{lstlisting}[numbers=left]
+int search(int a[],int n, int val)
+{
+
+  int i;
+
+  for(i=0;i<n;i++)
+    {
+      if(a[i]==val)
+	return i;
+    }
+
+  return -1;
+}
+\end{lstlisting}
+\caption{Linear search. This function searches the entries in the array a and returns the index when it finds val, if it doesn't find val it returns -1. The program {\tt linear\_search.c} implements this.\label{c_linear_search}.}
+\end{table}
+
+A much better way to search a sorted array is binary search. This is
+an example of a \lq{}divide and conquer\rq{} algorithm, many of the
+fastest algorithms use divide and conquer. It will be clear to you
+that this algorithm would be better written using recursion, this is
+typical of divide and conquer, but we haven't looked at analysing
+recursion yet. The idea is to divide the array in half and check which
+half, the half with bigger numbers or the half with smaller numbers,
+the value we are searching for belongs to and to keep doing this,
+dividing the remaining part of the array into two parts again and again
+until the remaining part of the array that is being searched has only
+one element. A code listing is given in Table~\ref{c_binary_search}.
+
+\begin{table}
+\begin{lstlisting}[numbers=left] 
+int search(int a[],int n, int val)
+{
+  int mid, low=0, high=n-1;
+
+  while(low<=high){
+      mid=(low+high)/2;
+      if(a[mid]==val)
+	return mid;
+      else if(val>a[mid])
+	low=mid+1;
+      else
+	high=mid -1;
+    }
+
+  return -1;
+}
+\end{lstlisting}
+\caption{Binary search. This function starts in the middle of the array
+  and checks if the value there is bigger or smaller than val, if it
+  is bigger then it does the same in the top half of the array, if it
+  is smaller, in the bottom half and then repeats until there are no
+  elements left. The program {\tt binary\_search.c} implements
+  this.\label{c_binary_search}}
+\end{table}
+
+This search is extremely fast. There is a chance that a[mid]==val,
+after a small number of iterations, indeed, if the middle value of the
+array is the search value it will halt after only one
+iteration. However, as usual, we assume the worst case, in which case
+the algorithm runs to end, dividing the number of elements in half
+each time. Ignoring the integer rounding effects, it goes like
+Table~\ref{tab_binary_search}. Starting with $n$ states each
+subsequent iteration halves the number of states until the last one
+when there is one state left. Thus
+\begin{equation}
+1=\frac{n}{2^{T(n)-1}}
+\end{equation}
+and taking the log of both sides
+\begin{equation}
+0=\log_2{n}-(T(n)-1)
+\end{equation}
+using $\log_2{1}=1$, $\log_2{a^b}=b\log_2{a}$ and $\log_2{2}=1$. Hence
+\begin{equation}
+T(n)=\log_2{n}+1
+\end{equation}
+and this algorithm is $O(\log_2{n})$.
+
+\begin{table}
+\begin{center}
+\begin{tabular}{llllllll}
+1&2&3&4&\ldots&k&\ldots&T(n)\\
+\hline
+$n$&$\frac{n}{2}$&$\frac{n}{4}$&$\frac{n}{8}$&$\ldots$&$\frac{n}{2^{k-1}}$&$\ldots$&1
+\end{tabular}
+\end{center}
+\caption{The number of elements left for binary search.\label{tab_binary_search}}
+\end{table}
+
+
+So, to reiterate; the usual way to examine the behavior of an
+algorithm is to look at the worst case run time. This is because the
+best case run time is often exceptional, like the one for binary
+search if the first guess happens to be correct. The average run time
+is often hard to calculate, both because it is often difficult to do
+the mathematics and because it would often mean having some
+description of how the initial data is distributed. Typically the
+worst run time is also \lq{}of the same order\rq{} as the average run
+time. We will see an exception to this later on in the case of quick
+sort in which the worst case behavior is unusual. The big-Oh notation
+is used for describing an algorithm, if the algorithm is said to be
+$O(g(n))$ we mean $T(n)\in O(g(n))$ no matter what the initial
+condition. Since $O(g(n))$ involves an upper bound $T(n)<cg(n)$ this
+makes sense.
+ 
+
+\end{document}

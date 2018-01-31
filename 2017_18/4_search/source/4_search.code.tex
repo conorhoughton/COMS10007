@@ -1,0 +1,54 @@
+%3_search.code.tex
+%notes for the course PandA1 COMS10002 taught at the University of Bristol
+%2015 Conor Houghton conor.houghton@bristol.ac.uk
+
+%To the extent possible under law, the author has dedicated all copyright 
+%and related and neighboring rights to these notes to the public domain 
+%worldwide. These notes are distributed without any warranty. 
+
+
+\documentclass{beamer}
+\usepackage{listings}
+\lstset{language=C}
+
+\begin{document}
+
+\subsection*{3 Search}
+\begin{frame}[fragile]{linear search}
+\begin{lstlisting}[numbers=left]
+int search(int a[],int n, int val)
+{
+   int i;
+
+   for(i=0;i<n;i++){
+      if(a[i]==val)
+         return i;
+   }
+
+  return -1;
+}
+\end{lstlisting}
+\end{frame}
+
+\begin{frame}[fragile]{binary search}
+\begin{lstlisting}[numbers=left] 
+int search(int a[],int n, int val)
+{
+   int mid, low=0, high=n-1;
+
+   while(low<=high){
+      mid=(low+high)/2;
+      if(a[mid]==val)
+         return mid;
+      else if(val>a[mid])
+         low=mid+1;
+      else
+         high=mid -1;
+   }
+
+   return -1;
+}
+\end{lstlisting}
+\end{frame}
+
+\end{document}
