@@ -1,0 +1,135 @@
+%recursion_tail.tex 
+%auxilary notes for the course algorithms COMS10007
+%taught at the University of Bristol 2018 Conor Houghton
+%conor.houghton@bristol.ac.uk
+
+%this is material that appeared in a previous version of the course
+
+%To the extent possible under law, the author has dedicated all copyright 
+%and related and neighboring rights to these notes to the public domain 
+%worldwide. These notes are distributed without any warranty. 
+
+\documentclass[11pt,a4paper]{scrartcl}
+\typearea{12}
+\usepackage{graphicx}
+\usepackage{listings}
+\lstset{language=C}
+\pagestyle{headings}
+\markright{COMS10007 - algorithms recursion\_tail - Conor}
+\begin{document}
+
+
+
+\subsubsection*{Recursion: tail recursion}
+     
+A previous version of this course was taught in the first rather than
+the second term and so it was useful to deal with tail recursion. This
+material has now been removed, but can be see here.
+
+The factorial also provides a convenient example for discussing tail
+recursion. One problem with recursion is that it can be wasteful of
+stack memory, roughly speaking the memory the program uses to run. If
+you call \texttt{factorial(10)} the program will write information
+related to \texttt{factorial(10)}, \texttt{factorial(9)} and so on
+down to \texttt{factorial(1)} onto the stack before
+\texttt{factorial(1)} returns and the open functions get rolled, being
+deleted from memory. In short, a copy of \texttt{factorial(9)} needs
+to be stored while it waits for \texttt{factorial(8)} to return the
+value 40320 to it, so that it can multiply that by 9 and return the
+result, 362880, on to \texttt{factorial(10)}. This isn't really a
+problem here, the factorial function will reach values well beyond the
+capacity of int long long before the memory use on the stack becomes a
+problem; however, in other circumstances it might be a problem. The
+solution is tail recursion.
+
+
+\begin{table}[b]
+\begin{lstlisting}[numbers=left]
+int factorial(int n)
+{
+   if(n<2)
+      return 1;
+
+   return n*factorial(n-1);
+}
+
+\end{lstlisting}
+\caption{The recursive function for calculating $n!=n(n-1)\ldots 1$. If $n<2$ it returns 1, giving a terminating condition, it also means $0!=1$ which is a normal mathematical convention, otherwise it calls factorial(n-1). If you trying using this function, note that for even modest values of n, n! is too big to fit into int.\label{c_factorial}}
+\end{table}
+
+
+\begin{table}
+\begin{lstlisting}[numbers=left]
+int factorial(int n)
+{
+   return (n<2) ? 1 : n*factorial(n-1);
+}
+
+\end{lstlisting}
+\caption{A fancier version of the factorial program which uses the ternary operator described in Table~\ref{c_ternary}.\label{c_factorial_fancy}}
+\end{table}
+
+
+\begin{table}
+\begin{lstlisting}[numbers=left]
+if (a)
+   ans=b;
+else 
+   ans=c;
+\end{lstlisting}
+\caption{The ternary operator ans = a ? b : c evaluates a and then
+  does either sets ans=b or ans=c depending on whether a is true of
+  false.  Thus ans=a ? b : c is equivalent to the code above. Ternary
+  operators are often faster to execute than the corresponding if
+  statement.\label{c_ternary}}
+\end{table}
+ 
+An algorithm is tail recursive if the return value of the function
+does not have to be modified before it is returned. The factorial
+function in Table~\ref{c_factorial} is not tail recursive because
+factorial(n-1) is multiplied by n before it is returned. However, the
+version in Table~\ref{c_factorial_tail} is tail recursive, it manages
+this by passing around another variable called big\_n that holds the
+part of the factorial that is calculated so far. Now, when
+\texttt{factorial(10)}, for example, is called it will call
+\texttt{factorial(10,1)}, since $10>2$ this will call
+\texttt{factorial(9,10)}; the only thing remaining for
+\texttt{factorial(10,1)} to do is to return the value of
+\texttt{factorial(9,10)} when it is done. This means, with a bit of
+cunning, the function does not have to remain written on the stack,
+the compiler just has to know that whatever \texttt{factorial(9,10)}
+returns should be sent to whatever called \texttt{factorial(10)};
+modern compilers are capable of this cunning so tail recursive
+algorithms make more efficient use of stack memory.
+
+\begin{table}
+\begin{lstlisting}[numbers=left]
+int factorial_r(int n, int big_n)
+{
+  if(n<2)
+    return big_n;
+
+  return factorial_r(n-1,n*big_n);
+}
+
+int factorial(int n)
+{
+  return factorial_r(n,1);
+}
+\end{lstlisting}
+\caption{The tail recursive function for calculating $n!=n(n-1)\ldots
+  1$. If $n<2$ it returns big\_n, otherwise it calls
+  factorial(n-1,n*big\_n). Since nothing happens to the
+  factorial(n-1,n*big\_n) before it is itself returned, this is an
+  example of tail recursion.\label{c_factorial_tail}}
+\end{table}
+
+\begin{table}
+\texttt{factorial\_r(10,1)}$\rightarrow$\texttt{factorial\_r(9,10)}$\rightarrow$\texttt{factorial\_r(8,90)}$\rightarrow$\\
+\texttt{factorial\_r(7,720)}$\rightarrow$\texttt{factorial\_r(6,5040)}$\rightarrow$\texttt{factorial\_r(5,30240)}$\rightarrow$\\
+\texttt{factorial\_r(4,151200)}$\rightarrow$\texttt{factorial\_r(3,604800)}$\rightarrow$\texttt{factorial\_r(2,1814400)}$\rightarrow$\\
+\texttt{factorial\_r(1,3628800)}
+\caption{The calling sequence of the tail recursive factorial program.\label{calling}}
+\end{table}
+
+\end{document}

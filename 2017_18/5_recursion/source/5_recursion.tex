@@ -1,0 +1,185 @@
+%5_recursion.tex
+%notes for the course algorithms COMS10007 taught at the University of Bristol
+%2018 Conor Houghton conor.houghton@bristol.ac.uk
+
+%To the extent possible under law, the author has dedicated all copyright 
+%and related and neighboring rights to these notes to the public domain 
+%worldwide. These notes are distributed without any warranty. 
+
+
+\documentclass[11pt,a4paper]{scrartcl}
+\typearea{12}
+\usepackage{graphicx}
+\usepackage{listings}
+\lstset{language=C}
+\pagestyle{headings}
+\markright{COMS10007 - algorithms 5\_recursion (e/g) - Conor\footnote{\texttt{github.com/conorhoughton/COMS10007}}}
+\begin{document}
+
+\subsection*{5 Recursion}
+
+A process is recursive if it repeats itself in a self-similar way. An
+easy example is the factorial
+\begin{equation}
+n!=n(n-1)(n-2)\ldots 1
+\end{equation}
+where $n$ is multiplied by $n-1$ and then by $n-2$ and so on down to one; or, put another way
+\begin{equation}
+n!=n(n-1)!
+\end{equation}
+and $1!=1$.
+
+In computer science recursion refers to an approach where a problem is
+solved by breaking it up into smaller similar problems. In practise
+this often means solving a problem using a function that calls
+itself. An easy example of recursion is given by the factorial; see
+Table~\ref{c_factorial} or, for a fancier version
+Table~\ref{c_factorial_fancy}. You will have learned that recursion is
+often a good way to implement algorithms on computers, that many
+algorithms can be designed recursively and that this is usually the
+best way to program them. Being comfortable with recursion is one of
+the signs of, and benefits of, learning to program properly! We will
+also see that working out the big-oh complexity for many recursive
+algorithms can be straight-forward using a set of formula known as
+the master equation.
+
+A recursive function consists of two parts, a \lq{}recursive
+case\rq{}, what happens normally, here return n*factorial(n-1), and a
+\lq{}terminating condition\rq{} or \lq{}base case\rq{}, a set of cases
+that the algorithm will always arrive at and can deal with without
+calling itself. These are important to avoid infinite recursion.
+
+Our task here is to calculate the algorithmic complexity of recursive
+algorithms. The trick is to work out a recursive formula for $T(n)$,
+the run time. Consider the factorial example; here
+\begin{equation}
+T(n)=c+T(n-1)
+\end{equation}
+where $c$ is a constant representing the computational time required
+for factorial(n) itself, the if statement, the multiplication and so
+on. Now we can expand it out
+\begin{equation}
+T(n)=c+T(n-1)=c+[c+T(n-2)]=2c+T(n-2)
+\end{equation}
+and this keeps going
+\begin{equation}
+T(n)=2c+T(n-2)=3c+T(n-3)=4c+T(n-4)=\ldots = (n-1)c+T(1)
+\end{equation}
+so factorial is $O(n)$. 
+
+Another approach is to use an ansatz, that is to guess the answer. For
+\begin{equation}
+T(n)=c+T(n-1)
+\end{equation}
+we might guess from experience that this has a solution of the form
+\begin{equation}
+T(n)=An+B
+\end{equation}
+for some $A$ and $B$ we haven't specified yet. In fact $T(n)=An+B$
+represents a whole family of possible solutions corresponding to different $A$s
+and $B$s, we just need to show that family contains an actual solution. We do this by substitution. If we substitute into the recursion relation we get
+\begin{equation}
+An+B=c+A(n-1)+B=An+B+c-A
+\end{equation}
+which holds provided $A=c$. In otherwords we can make an educated
+guess as to the form of the solution and then show by substitution
+that there is a solution of this form.
+
+We have already seen another recursive algorithm, although we didn't
+write it as one: binary search. A recursive version of binary search is
+given in Table~\ref{c_binary_search_recursive}. Here, leaving out
+rounding effects and so on, in the worst case
+\begin{equation}
+T(n)=c+T(n/2)
+\end{equation}
+which is solved by 
+\begin{equation}
+T(n)=c\log_2(n)
+\end{equation}
+because 
+\begin{equation}
+T(n/2)=c\log_2(n/2)=c\log_2(n)-c\log_2(2)=c\log_2(n)-c
+\end{equation}
+and so, substituting back into the equation, this is the solution.
+Here, again, working out the run time requires that you know how to
+solve the recursion relation. Our approach here is to do what we have
+been doing, we guess, based on the examples we've studied, and then
+show we are correct by substituting back in.
+
+\begin{table}[b]
+\begin{lstlisting}[numbers=left]
+int factorial(int n)
+{
+   if(n<2)
+      return 1;
+
+   return n*factorial(n-1);
+}
+
+\end{lstlisting}
+\caption{The recursive function for calculating $n!=n(n-1)\ldots 1$. If $n<2$ it returns 1, giving a terminating condition, it also means $0!=1$ which is a normal mathematical convention, otherwise it calls factorial(n-1). If you trying using this function, note that for even modest values of n, n! is too big to fit into int.\label{c_factorial}}
+\end{table}
+
+
+\begin{table}
+\begin{lstlisting}[numbers=left]
+int factorial(int n)
+{
+   return (n<2) ? 1 : n*factorial(n-1);
+}
+
+\end{lstlisting}
+\caption{A fancier version of the factorial program which uses the ternary operator described in Table~\ref{c_ternary}.\label{c_factorial_fancy}}
+\end{table}
+                  
+
+   
+\begin{table}
+\begin{lstlisting}[numbers=left]
+if (a)
+   ans=b;
+else 
+   ans=c;
+\end{lstlisting}
+\caption{The ternary operator ans = a ? b : c evaluates a and then
+  either sets ans=b or ans=c depending on whether a is true or
+  false.  Thus ans=a ? b : c is equivalent to the code above. Ternary
+  operators are often faster to execute than the corresponding if
+  statement.\label{c_ternary}}
+\end{table}
+ 
+
+
+\begin{table}
+\begin{lstlisting}[numbers=left]
+int search(int a[],int n, int val)
+{
+  return find_r(a,val,0,n-1);
+}
+ 
+int find_r(int a[], int val,int low,int high)
+{
+
+  if(high<low)
+    return -1;
+
+  int mid=(high+low)/2;
+
+  if(a[mid]==val)
+    return mid;
+
+  if(val>a[mid])
+    return find_r(a,val,mid+1,high);
+  
+  return find_r(a,val,low,mid-1);
+}
+\end{lstlisting}
+\caption{A recursive implementation of binary search. There are two
+  halting conditions, val is found, or high\<low, meaning that val
+  isn't an element of a. Note that, though each call works with a
+  smaller and smaller number of elements, for convenience the same
+  array is used each time. This function is implemented in \texttt{
+    binary\_search\_recursive}.\label{c_binary_search_recursive}}
+\end{table}
+
+\end{document}

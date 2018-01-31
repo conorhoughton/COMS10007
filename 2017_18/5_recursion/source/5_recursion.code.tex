@@ -1,0 +1,86 @@
+\documentclass{beamer}
+\usepackage{listings}
+\lstset{language=C}
+
+\begin{document}
+
+\subsection*{II.1 Recursion}
+\begin{frame}[fragile]{factorial}
+\begin{lstlisting}[numbers=left]
+int factorial(int n)
+{
+   if(n<2)
+      return 1;
+
+   return n*factorial(n-1);
+}
+\end{lstlisting}
+\end{frame}
+
+
+\begin{frame}[fragile]{factorial with ternary operator}
+\begin{lstlisting}[numbers=left]
+int factorial(int n)
+{
+   return (n<2) ? 1 : n*factorial(n-1);
+}
+\end{lstlisting}
+\end{frame}
+
+
+\begin{frame}[fragile]{ternary ans = a \& b : c }
+\begin{lstlisting}[numbers=left]
+if (a)
+   ans=b;
+else 
+   ans=c;
+\end{lstlisting}
+\end{frame}
+
+%% \begin{frame}[fragile]{factorial with tail recursion}
+%% \begin{lstlisting}[numbers=left]
+%% int factorial_r(int n, int big_n)
+%% {
+%%   if(n<2)
+%%     return big_n;
+
+%%   return factorial_r(n-1,n*big_n);
+%% }
+
+%% int factorial(int n)
+%% {
+%%   return factorial_r(n,1);
+%% }
+%% \end{lstlisting}
+%% \end{frame}
+
+\begin{frame}[fragile]{binary search with recursion 1}
+\begin{lstlisting}[numbers=left]
+int search(int a[],int n, int val)
+{
+  return find_r(a,val,0,n-1);
+}
+\end{lstlisting}
+\end{frame}
+
+\begin{frame} [fragile]{binary search with recursion 2}
+\begin{lstlisting}[numbers=left,firstnumber=5]
+int find_r(int a[],int val,int low,int high)
+{
+
+  if(high<low)
+    return -1;
+
+  int mid=(high+low)/2;
+
+  if(a[mid]==val)
+    return mid;
+
+  if(val>a[mid])
+    return find_r(a,val,mid+1,high);
+  
+  return find_r(a,val,low,mid-1);
+}
+\end{lstlisting}
+\end{frame}
+\end{document}
