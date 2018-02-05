@@ -12,11 +12,13 @@
 \usepackage{graphicx}
 \usepackage{listings}
 \lstset{language=C}
-\pagestyle{headings}
-\markright{COMS10007 - algorithms 5\_recursion (e/g) - Conor \texttt{github.com/conorhoughton/COMS10007}}
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\lfoot{\texttt{github.com/conorhoughton/COMS10007}}
+\lhead{COMS10007 - algorithms 5\_recursion (e/g) - Conor}
 \begin{document}
 
-\subsection*{5 Recursion}
+\section*{5 Recursion}
 
 A process is recursive if it repeats itself in a self-similar way. An
 easy example is the factorial
@@ -181,5 +183,104 @@ int find_r(int a[], int val,int low,int high)
   array is used each time. This function is implemented in \texttt{
     binary\_search\_recursive}.\label{c_binary_search_recursive}}
 \end{table}
+
+\subsection*{Some more recursion examples}
+
+Leaving out the algorithms for the minute, lets examine some other
+examples of solving recursion relations. First lets consider
+\begin{equation}
+T(n)=T(n-1)+3
+\end{equation}
+with $T(0)=1$. Now 
+\begin{equation}
+T(n)=T(n-1)+3=T(n-2)+3+3=T(n-3)+3\cdot 3=\ldots
+\end{equation}
+It would be easy to solve this directly by telescoping, but lets use
+an ansatz, since there is clearly a $3$ for each iteration we'll try
+$T(n)=3n+A$, substituting in
+$$3n+A=3n-3+A+3$$ so the equation holds for all $A$, alternatively substituting a more general
+ansatz of the form $T(n)=Bn+A$ would give you
+$$Bn+A=Bn-B+A+3$$ which holds for all $A$ and $B=3$. Either way
+$T(n)=3n+A$, now the initial condition is $T(0)=1$ but setting $n=0$
+gives $T(0)=A$ so $A=1$ and the solution is $T(n)=3n+1$. If instead of
+$T(0)=1$ we had $T(1)=1$ the question is exactly the same except the
+$T(1)=1$ so taking $T(n)=3n+A$ again $T(1)=3+A=1$ and hence $A=-2$ and
+the solution is $T(n)=3n-2$.
+
+Now lets look at a harder one:
+\begin{equation}
+T(n)=2T(n-1)+3
+\end{equation}
+with $T(0)=1$. Now 
+\begin{equation}
+T(n)=2T(n-1)+3=4T(n-2)+2\cdot 3=2^3T(n-3)+(4+2+1)\cdots 3 =\cdots
+\end{equation}
+Doing this directly by telescoping requires skill because you need to
+know that $2^{n-1}+2^{n-2}+\ldots +1=2^n-1$, but you could guess,
+based on the $2^3$ that
+\begin{equation}
+T(n)=2^nA+B
+\end{equation}
+and hope for the best, substituting in gives
+$$2^nA+B=2^nA+2B+3$$
+so this is a solution when $B=-3$, hence
+$$T(n)=A2^n-3$$
+and the initial condition gives $T(0)=A-3=1$ so $A=4$ and
+$$T(n)=2^{n+2}-3$$
+
+Here is another tricky example, consider $T(n)=T(n-1)+3n$ with
+$T(1)=1$. Now telescoping gives bits that look like
+$3n+3(n-1)+3(n-2)+\ldots$, in other words, you seem to get an $n$ in
+every iteration of the telescope. Since there are $n$ iterations of
+the telescope you might guess
+\begin{equation}
+T(n)=An^2+Bn+C
+\end{equation}
+so substituting that in gives
+\begin{equation}
+An^2+Bn+C=A(n-1)^2+B(n-1)+C+3n=An^2-2An+A+Bn-B+C+3n
+\end{equation}
+or, after cancelling
+\begin{equation}
+-2An+A-B+3n=0
+\end{equation}
+so $A=3/2$ and $B=A$. Thus
+\begin{equation}
+T(n)=\frac{3}{2}n^2-\frac{3}{2}n+C
+\end{equation}
+and the initial condition means $C=1$.
+
+\subsection*{An important example with logs}
+Now lets consider the example
+\begin{equation}
+T(n)=cn+2T(n/2)
+\end{equation}
+This will be relevant to algorithms we look at in the course and comes
+from a divide-and-conquer approach to sorting. Now, telescoping
+\begin{eqnarray}
+T(n)&=&cn+2T(n/2)\\
+    &=&cn+2c(n/2)+4T(n/4)\\
+    &=&2cn+4c(n/4)+8T(n/8)\\
+    &=&3cn+8c(n/8)+16T(n/16)\\
+    &=&\ldots\\
+    &=&rcn+2^rT(n/2^r)
+\end{eqnarray}
+which carries on until $n/2^r=1$, or $r=\log{n}$; with a bit of care
+this gives the solution; here we will use the ansatz
+\begin{equation}
+T(n)=An\log{n}
+\end{equation}
+so
+\begin{equation}
+2T(n/2)=2A\frac{n}{2}\log{\frac{n}{2}}=An\log{n}-An
+\end{equation}
+and so this solves the approximate equation when $A=c$. In fact by substitution you can see that
+\begin{equation}
+T(n)=An\log{n}+Cn
+\end{equation}
+solves the equation for any value of $C$, if we were solving this
+equation exactly then the initial value would be used to fix $C$; in
+this course though we are only interested in the large $n$ behaviour,
+so this isn't important.
 
 \end{document}
