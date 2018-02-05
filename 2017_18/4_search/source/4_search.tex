@@ -14,8 +14,10 @@
 \usepackage{listings}
 \usepackage{color}
 \lstset{language=C}
-\pagestyle{headings}
-\markright{COMS10007 - algorithms 4\_search (f) - Conor \texttt{github.com/conorhoughton/COMS10007}}
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\lfoot{\texttt{github.com/conorhoughton/COMS10007}}
+\lhead{COMS10007 - algorithms 4\_search (f) - Conor}
 \begin{document}
 
 \subsection*{4 Search: linear and binary search example}
@@ -102,7 +104,7 @@ and taking the log of both sides
 \begin{equation}
 0=\log_2{n}-(T(n)-1)
 \end{equation}
-using $\log_2{1}=1$, $\log_2{a^b}=b\log_2{a}$ and $\log_2{2}=1$. Hence
+using $\log_2{2}=1$, $\log_2{a^b}=b\log_2{a}$ and $\log_2{2}=1$. Hence
 \begin{equation}
 T(n)=\log_2{n}+1
 \end{equation}
