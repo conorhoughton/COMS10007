@@ -13,8 +13,10 @@
 \usepackage{listings}
 \usepackage{color}
 \lstset{language=C}
-\pagestyle{headings}
-\markright{COMS10007 1\_introduction (a/b, start of c) - Conor\footnote{\texttt{github.com/conorhoughton/COMS10007}}}
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\lfoot{\texttt{github.com/conorhoughton/COMS10007}}
+\lhead{COMS10007 1\_introduction (a/b, start of c) - Conor}
 \begin{document}
 
 \section*{1: Introduction}
@@ -364,7 +366,7 @@ then, if $n>c/5$
 \begin{equation}
 5n+1+\frac{6}{n}>5\frac{c}{5}+1=c+1>c
 \end{equation}
-so, no matter what value of $c$ is chosen, making $n>5/n$ implies
+so, no matter what value of $c$ is chosen, making $n>c/5$ implies
 \begin{equation}
 5n^2+n+6>cn
 \end{equation}
