@@ -1,0 +1,119 @@
+\documentclass{beamer}
+\usepackage{listings}
+\lstset{language=C}
+
+\begin{document}
+
+\subsection*{Sorting - bubble sort and quicksort.}
+\begin{frame}[fragile]{Swap}
+\begin{lstlisting}[numbers=left]
+void swap(int a[],int i, int j)
+{
+   int temp=a[i];
+   a[i]=a[j];
+   a[j]=temp;
+}
+\end{lstlisting}
+\end{frame}
+
+\begin{frame}[fragile]{Bubble sort}
+\begin{lstlisting}[numbers=left]
+void bubble(int a[], int n)
+{
+   int i,unfinished=1;
+  
+   while(unfinished){
+      unfinished=0;
+      for(i=0;i<n-1;i++)
+         if(a[i]>a[i+1]){
+            unfinished=1;
+            swap(a,i,i+1);	    
+         }
+   }
+}
+\end{lstlisting}
+\end{frame}
+
+\begin{frame}[fragile]{Quicksort - median}
+\begin{lstlisting}[numbers=left]
+int median(int a[],int i, int j, int k)
+{
+
+   if(a[i]>a[j]&&a[i]>a[k])
+      return (a[j]>a[k]) ? j : k;
+   if(a[i]<a[j]&&a[i]<a[k])
+      return (a[j]>a[k]) ? k : j;
+
+   return i;
+}
+\end{lstlisting}
+\end{frame}
+
+
+
+\begin{frame}[fragile]{Quicksort - wrapper}
+\begin{lstlisting}[numbers=left]
+void quick(int a[], int n)
+{
+  quick_r(a,0,n-1);
+}
+\end{lstlisting}
+\end{frame}
+
+\begin{frame}[fragile]{Quicksort - recursive function 1, termination}
+\begin{lstlisting}[numbers=left]
+void quick_r(int a[],int first, int last)
+{
+
+   if(last<=first)
+      return;
+
+   if(last==first+1)
+      if(a[first]<a[last])
+         return;
+      else{
+        swap(a,first,last);
+        return;
+      }
+\end{lstlisting}
+\end{frame}
+
+\begin{frame}[fragile]{Quicksort - recursive function 2, choose pivot}
+\begin{lstlisting}[numbers=left,firstnumber=15]
+   int i=first,j=last-1;
+   swap(a,median(a,first,first+1,last),last);
+\end{lstlisting}
+\end{frame}
+\begin{frame}[fragile]{Quicksort - recursive function 3, partition}
+\begin{lstlisting}[numbers=left,firstnumber=17]
+   while(i<j){
+      while(a[j]>=a[last]&&j>first)
+         j--;
+      while(a[i]<a[last])
+         i++;
+      if(i<j)
+         swap(a,i,j);
+   }
+
+   swap(a,last,i);
+
+   quick_r(a,first,i-1);
+   quick_r(a,i+1,last);
+
+}
+\end{lstlisting}
+\end{frame}
+
+\begin{frame}[fragile]{Quicksort - Haskell}
+\begin{lstlisting}[numbers=left,firstnumber=1]
+quicksort :: Ord a => [a] -> [a]
+quicksort [] = []
+quicksort (x:xs) = quicksort ys ++ [x] ++ quicksort zs
+   where ys = [ y | y <- xs , y <= x ]
+         zs = [ z | z <- xs , x <  z ]
+\end{lstlisting}
+\end{frame}
+
+
+
+\end{document}

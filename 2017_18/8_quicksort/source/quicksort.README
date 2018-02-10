@@ -1,0 +1,10 @@
+ In this version of quicksort it doesn't choose the three values for
+ median of threes randomly, it assumes the data is already random and
+ picks the first two and the last. If this is not the case then some
+ sort of randomization is needed. For exmaple, maybe the first and
+ last entry could be chosen, along with a random entry in between,
+ this would be achieved by using
+
+ 
+int random_middle=first+1+rand()%(last-first-1);
+swap(a,median(a,first,first+random,last),last);	 

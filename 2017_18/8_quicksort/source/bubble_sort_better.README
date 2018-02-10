@@ -1,0 +1,7 @@
+Here r keeps track of how many elements at the end are already sorted
+so it reduces the size of the inner loop.
+
+Many versions of bubble sort don't bother with the "unfinished" flag,
+considering the run time expense of setting it every time there is a
+swap it might be quicker to replace the while loop with a for loop
+that goes through the list n times.
