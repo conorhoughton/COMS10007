@@ -1,0 +1,171 @@
+%9_merge_sort.tex
+%notes for the course COMS10007 taught at the University of Bristol
+%Conor Houghton conor.houghton@bristol.ac.uk
+
+%To the extent possible under law, the author has dedicated all copyright 
+%and related and neighboring rights to these notes to the public domain 
+%worldwide. These notes are distributed without any warranty. 
+
+\documentclass[11pt,a4paper]{scrartcl}
+\typearea{12}
+\usepackage{graphicx}
+\usepackage{pstricks}
+\usepackage{listings}
+\lstset{language=C}
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\lfoot{\texttt{github.com/conorhoughton/COMS10007}}
+\lhead{COMS10007 - algorithms 8\_merge\_sort (h) - Conor}
+\begin{document}
+
+\subsection*{9 - merge sort}
+
+In a way quicksort pushes \lq{}sortedness\rq{} downwards, each time it
+splits the array of entries it divides them into a lower and upper
+group so that when the process reaches the bottom, with one or two
+element sub-arrays, the whole array is sorted. Merge sort, sometimes
+called mergesort, works the other way, sorting the subarrays as it
+merges them together. It was invented in 1945 by John von Neumann, a towering
+figure in mid-C20 computer science and mathematics. It works because
+merging two sorted arrays into another sorted array is an $O(n)$
+operation.
+
+We will examine the merge operation first; this involves two ordered
+arrays, to be merged, and a extra array for putting the merged
+elements. There is a marker for each of the order arrays, say $i$ and
+$j$, these both start at the low end of there arrays and the elements
+at $i$ and at $j$ are compared, the lower is added to the merged
+arrays and the corresponding marker is moved forward one. This keeps
+going until one of the markers reaches the end of its list, when that
+happens all the remaining elements of the other array are added to the
+merged array. Code to do this is given in Table~\ref{c_merge}; in this
+code the two sorted arrays that need to be merged are consequitive
+subarrays marked by \texttt{first} to \texttt{mid-1} and \texttt{mid} to \texttt{last}.
+
+
+\begin{table}
+\begin{lstlisting}[numbers=left]
+void merge(int a[], int merged_a[], int first, int mid, int last)
+{
+   int last_lower=mid-1,i=first,j=mid,merged_i=first;
+
+   while(i<=last_lower&&j<=last)
+      if(a[i]<a[j]){
+         merged_a[merged_i]=a[i];
+	 i++;
+	 merged_i++;
+      }
+      else{
+	 merged_a[merged_i]=a[j];
+	 j++;
+	 merged_i++;
+      }
+
+   while(i<=last_lower){
+      merged_a[merged_i]=a[i];
+      i++;
+      merged_i++;
+   }
+
+   while(j<=last){
+      merged_a[merged_i]=a[j];
+      j++;
+      merged_i++;
+   }
+
+   for(i=first;i<=last;i++)
+      a[i]=merged_a[i];
+}
+\end{lstlisting}
+\caption{Merging. This merges the elements from first to mid-1 and mid
+  to last under the assumption that they are already sorted, to give a
+  merged array from first to last of merged\_a, these elements are
+  then copied back to elements first to last of a. This function is
+  part of the full merge sort program \texttt{
+    merge\_sort.c}. \label{c_merge}}
+\end{table}
+
+Now that that is done, it is easy to do merge sort, basically at each
+stage the array is split in two and merge sort is called on each half,
+when these return they are merged using the merge function. The
+recursion terminates on a single element list. A function for doing
+this is given in Table~\ref{c_merge_sort} and a rough example is given
+in Table~\ref{table_merge_sort}; a Haskell version is given in Table~\ref{haskell_merge_sort}.
+
+Merge sort does the same thing no matter what order the entries are in
+to start with. The run times can be calculated from the recursion,
+ignoring the small effect from $n$ not always begin even
+\begin{equation}
+T(n)=cn+2T(n/2)
+\end{equation}
+where the $cn$ corresponds to the merge. This is the same recursion as
+for the quicksort, so merge sort is $O(n\log{n})$ with the difference
+here that this is the run time no matter what. The algorithm, as
+implemented here, needs another array the same length as the original
+one, for doing the merges into; thus, the extra memory use is
+$O(n)$. This can be beaten, there are implementations with smaller
+memory use, even implementations that run in place, but they are more
+complicated. Parallel processing works well with merge sort and there
+are efficient sort algorithms based on a mixture of merge sort and
+insert sort.
+
+\begin{table}
+\begin{lstlisting}[numbers=left]
+void merge_sort_r(int a[], int merged_a[],int first, int last)
+{
+   if(last-first<=0)
+     return;
+
+   int mid=(last+first)/2+1;
+
+   merge_sort_r(a, merged_a,first,mid-1);
+   merge_sort_r(a, merged_a,mid,last);
+
+   merge(a, merged_a, first, mid, last);
+
+}
+\end{lstlisting}
+\caption{Merge sort. This splits the array, calls itself recursively
+  on the two parts and then merges them. It can be found as part of
+  \texttt{merge\_sort.c}, this also includes the wrapper and so
+  on. \label{c_merge_sort}}
+\end{table}
+
+
+\begin{table}
+\begin{lstlisting}[numbers=left]
+mergesort :: Ord a => [a] -> [a]
+mergesort []  = []
+mergesort [x] = [x]
+mergesort xs  = merge (mergesort ys) (mergesort zs)
+  where
+    (ys, zs) = splitAt (length xs `div` 2) xs
+
+    merge []     ys     = ys
+    merge xs     []     = xs
+    merge (x:xs) (y:ys)
+      | x <= y     = x : merge xs (y:ys)
+      | otherwise  = y : merge (x:xs) ys
+\end{lstlisting}
+\caption{Merge sort: Haskell example code from Nick W. \label{haskell_merge_sort}}
+\end{table}
+
+\begin{table}
+\begin{tabular}{ccccccccccccccc}
+8&&5&&3&&4&&2&&6&&1&&7\\
+8&&5&&3&&4&$|$&2&&6&&1&&7\\
+8&&5&$|$&3&&4&$|$&2&&6&$|$&1&&7\\
+8&$|$&5&$|$&3&$|$&4&$|$&2&$|$&6&$|$&1&$|$&7\\
+5&&8&$|$&3&&4&$|$&2&&6&$|$&1&&7\\
+3&&4&&5&&8&$|$&1&&2&&6&&7\\
+1&&2&&3&&4&&5&&6&&7&&8
+\end{tabular}
+\caption{Merge sort in action. This represents the process of merge
+  sorting, the vertical line represents the different subarrays. This
+  table is very schematic, it doesn't really show the order things
+  happen, and it shows things happening to different subarrays
+  simulataneously, when, they don't actually happen like
+  that.\label{table_merge_sort}}
+\end{table}
+
+\end{document}

@@ -1,0 +1,84 @@
+\documentclass{beamer}
+\usepackage{listings}
+\lstset{language=C}
+
+\begin{document}
+
+\subsection*{8\_mergesort - merge sort.}
+\begin{frame}[fragile]{Merge 1}
+\begin{lstlisting}[numbers=left]
+void merge(int a[],int m_a[],int f,int m,int l)
+{
+   int l_lower=mid-1,i=f,j=m, merged_i=f;
+
+   while(i<=l_lower&&j<=l)
+      if(a[i]<a[j]){
+         m_a[merged_i]=a[i];
+         i++;
+         merged_i++;
+      }
+      else{
+         m_a[merged_i]=a[j];
+         j++;
+         merged_i++;
+      }
+\end{lstlisting}
+\end{frame}
+\begin{frame}[fragile]{Merge 2}
+\begin{lstlisting}[numbers=left,firstnumber=16]
+   while(i<=l_lower){
+      m_a[merged_i]=a[i];
+      i++;
+      merged_i++;
+   }
+
+   while(j<=l){
+      m_a[merged_i]=a[j];
+      j++;
+      merged_i++;
+   }
+   for(i=f;i<=l;i++)
+    a[i]=m_a[i];
+}
+\end{lstlisting}
+\end{frame}
+
+\begin{frame}[fragile]{Merge sort}
+\begin{lstlisting}[numbers=left]
+void merge_sort_r(int a[], int m_a[],int f,int l)
+{
+   if(l-f<=0)
+      return;
+
+   int mid=(l+f)/2+1;
+
+   merge_sort_r(a, m_a,f,mid-1);
+   merge_sort_r(a, m_a,mid,l);
+
+   merge(a, m_a, f, mid, l);
+
+   return;
+}
+\end{lstlisting}
+\end{frame}
+
+\begin{frame}[fragile]{Merge sort - Haskell}
+\begin{lstlisting}[numbers=left]
+mergesort :: Ord a => [a] -> [a]
+mergesort []  = []
+mergesort [x] = [x]
+mergesort xs  = merge (mergesort ys) (mergesort zs)
+  where
+    (ys, zs) = splitAt (length xs `div` 2) xs
+
+    merge []     ys     = ys
+    merge xs     []     = xs
+    merge (x:xs) (y:ys)
+      | x <= y     = x : merge xs (y:ys)
+      | otherwise  = y : merge (x:xs) ys
+\end{lstlisting}
+\end{frame}
+
+
+
+\end{document}
