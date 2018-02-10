@@ -1,0 +1,46 @@
+%another_example.tex
+%notes for the course algorithms COMS10007 taught at the University of Bristol
+%Conor Houghton conor.houghton@bristol.ac.uk
+
+%To the extent possible under law, the author has dedicated all copyright 
+%and related and neighboring rights to these notes to the public domain 
+%worldwide. These notes are distributed without any warranty. 
+
+
+\documentclass[11pt,a4paper]{scrartcl}
+\typearea{12}
+\usepackage{graphicx}
+\usepackage{listings}
+\lstset{language=C}
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\lfoot{\texttt{github.com/conorhoughton/COMS10007}}
+\lhead{COMS10007 - algorithms 5\_recursion (e/g) another example - Conor}
+\begin{document}
+
+\subsection*{5 Recursion - another example}
+
+Here is another tricky example, this appeared in a worksheet in this course in the past but it was left out this year; I include it for interest only.
+
+Consider $T(n)=T(n-1)+3n$ with $T(1)=1$. Now telescoping gives bits
+that look like $3n+3(n-1)+3(n-2)+\ldots$, in other words, you seem to
+get an $n$ in every iteration of the telescope. Since there are $n$
+iterations of the telescope you might guess
+\begin{equation}
+T(n)=An^2+Bn+C
+\end{equation}
+so substituting that in gives
+\begin{equation}
+An^2+Bn+C=A(n-1)^2+B(n-1)+C+3n=An^2-2An+A+Bn-B+C+3n
+\end{equation}
+or, after cancelling
+\begin{equation}
+-2An+A-B+3n=0
+\end{equation}
+so $A=3/2$ and $B=A$. Thus
+\begin{equation}
+T(n)=\frac{3}{2}n^2-\frac{3}{2}n+C
+\end{equation}
+and the initial condition means $C=1$.
+
+\end{document}
