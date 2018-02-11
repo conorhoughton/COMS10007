@@ -1,0 +1,110 @@
+%worksheet2.tex
+%problem set for the course COMS10007 taught at the University of Bristol
+%Conor Houghton conor.houghton@bristol.ac.uk
+
+%To the extent possible under law, the author has dedicated all copyright 
+%and related and neighboring rights to these notes to the public domain 
+%worldwide. These notes are distributed without any warranty. 
+
+
+
+\documentclass[11pt,a4paper]{scrartcl}
+\typearea{12}
+\usepackage{graphicx}
+\usepackage{pstricks}
+\usepackage{listings}
+\usepackage{color}
+
+\newif\ifanswers
+\answerstrue
+
+\lstset{language=C}
+\pagestyle{headings}
+\markright{COMS10007 - algorithms worksheet 2 - Conor}
+\begin{document}
+
+\subsection*{Algorithms Worksheet 2}
+
+For each part of a question write the answer and include
+workings. Question one and three are worth two marks, question two is
+worth four, there are also two marks for attendance.
+
+\begin{enumerate}
+
+\item Solve
+\begin{equation}
+T(n)=-T(n-1)+4
+\end{equation}
+with $T(0)=1$. 
+
+\ifanswers
+
+\noindent Solution:
+
+Substitute in $T(n)=A(-1)^n+B$ to get
+\begin{equation}
+A(-1!)^n+B=-A(-1)^{n-1)-B+4
+\end{equation}
+so $2B=4$ or $B=2$; now $T(n)=A(-1)^n+2$ so $1=T(0)=A+2$ and hence $A=-1$.
+
+\fi
+
+\item Solve for $T(n)$ using the ansatz $T(n)=r^n$ for the following
+  two step recursion relations. Solving for $r$ will give two values
+  $r_1$ and $r_2$, this means that the general solution will be
+  $T(n)=Ar_1^n+Br_2^n$. Use the two base values to find $A$ and $B$. 
+
+\begin{enumerate}
+\item $T(n)=2T(n-1)+3T(n-2)$ with $T(0)=0$ and $T(1)=4$.
+\item $T(n)=T(n-2)$ with $T(0)=0$ and $T(1)=2$.
+\end{enumerate}
+
+
+\ifanswers 
+
+\noindent Solution:
+
+For (a) we have 
+\begin{equation}
+r^2=2r+3
+\end{equation}
+so $r^2-2r-3=0$ or $(r-3)(r+1)=0$ so
+\begin{equation}
+T(n)=3^nA+(-1)^nB
+\end{equation}
+and the initial conditions give $A+B=0$ and $3A-B=4$ so 
+\begin{equation}
+T(n)=3^n-(-1)^n
+\end{equation}
+For (b) we get $r^2=1$ so 
+\begin{equation}
+T(n)=A+(-1)^nB
+\end{equation}
+and the initial conditions give $A+B=0$ and $A-B=2$ so
+\begin{equation}
+T(n)=1-(-1)^n
+\end{equation}
+\fi
+
+\item This question is about the master theorem. Use it to
+  calculate big-Theta for $T(n)$ in each case. 
+
+\begin{enumerate}
+\item $T(n)= 25T(n/5)+4n^2$
+\item $T(n)= 20T(n/5)+4n$
+\item $T(n)= 16T(n/2)+2n^4$
+\end{enumerate}
+
+\ifanswers
+
+\noindent Solutions: for the first one $\log_5{25}=2$ and $c=2$ so
+this is the middle case and $T(n)\in \Theta(n^2\log n)$, for the
+second $\log_5 20>1$ so it is the first case and $T(n)\in
+\Theta(n^{\log_5{20}})$; the last one is in the middle case as well
+since $\log_2{16}=4$ and $T(n)\in \Theta(n^4\log{n})$.
+
+\fi
+
+\end{enumerate}
+
+\end{document}
