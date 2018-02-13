@@ -15,7 +15,7 @@
 \usepackage{fancyhdr}
 \pagestyle{fancy}
 \lfoot{\texttt{github.com/conorhoughton/COMS10007}}
-\lhead{COMS10007 - algorithms 7\_quicksort (j) - Conor}
+\lhead{COMS10007 - algorithms 8\_quicksort (j) - Conor}
 \begin{document}
 
 \section*{8 Sorting - bubble sort and quicksort}
@@ -41,7 +41,8 @@ confusing since it can be hard to remember what you mean by
 \lq{}top\rq{} and \lq{}bottom\rq{}, but the analogy is useful, the
 elements move up or down the list with each successive run
 through. Table \ref{table_bubble} gives an example of bubble sort in
-action and code for bubble sort is given in Table~\ref{c_bubble}.
+action and code for bubble sort is given in Table~\ref{c_bubble} and
+Table~\ref{haskell_bubble}.
 
 Bubble sort is $O(n^2)$, for the worst case where the list starts off
 in reverse order it takes $n$ passes through the list to order it,
@@ -123,6 +124,21 @@ void bubble(int a[], int n)
     bubble\_sort\_better.c}. \label{c_bubble}}
 \end{table}
 
+\begin{table}
+\begin{lstlisting}[numbers=left]
+bubblesort :: Ord a => [a] -> [a]
+bubblesort xs
+  | ys == xs  = ys
+  | otherwise = bubblesort ys
+  where ys = bubble xs
+
+bubble :: Ord a => [a] -> [a]
+bubble (x:y:zs)
+  | x > y     = y : bubble (x:zs)
+  | otherwise = x : bubble (y:zs)
+bubble xs = xs
+\caption{A Haskell bubble sort from Nick W. \label{haskell_bubble}}
+\end{table}
 
 \subsection*{Quicksort}
 
