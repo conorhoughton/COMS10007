@@ -1,0 +1,57 @@
+%counting_challenge.tex
+%problem set for the course COMS10007 taught at the University of Bristol
+%Conor Houghton conor.houghton@bristol.ac.uk
+
+%To the extent possible under law, the author has dedicated all copyright 
+%and related and neighboring rights to these notes to the public domain 
+%worldwide. These notes are distributed without any warranty. 
+
+\documentclass[11pt,a4paper]{scrartcl}
+\typearea{12}
+\usepackage{graphicx}
+\usepackage{pstricks}
+\usepackage{listings}
+\usepackage{color}
+
+\newif\ifanswers
+\answerstrue
+
+\lstset{language=C}
+\pagestyle{headings}
+\markright{COMS10007 - algorithms fun question - Conor}
+\begin{document}
+
+\subsection*{Fun question}
+
+This question is intended to help you practice counting things. In the
+Arthur C. Clarke short story \textsl{The Nine Billion Names of God} a
+\lq{}Mark V Automatic Sequence Computer\rq{} is purchased by a
+religious community to list all the possible names of their deity, a
+task whose importance is central to their belief system. We are told
+that this name is nine or fewer characters long and that no characters
+can occur more than three times in sequence, so AABBAABBA is a
+possible name, as is AAABBAABB, but AAAABBAAB is not (see note
+below). We are not told in the story how many characters the alphabet
+contains but for definiteness lets assume there are 18 letters in the
+alphabet. Show how you could calculated how many names there are with
+$n$; in other words, describe a method for calculating the number of
+names of up to length $n$ and use this method to calculate the
+number of names of length nine.
+
+\subsubsection*{Note from the Arthur C Clarke story}
+
+The restriction permits letters to repeat three times but not four may
+seem surprising, this is noted in the story
+\begin{quotation}
+\lq{}[W]e use a special alphabet of our own. Modifying the
+electromatic typewriters to deal with this is, of course, trivial. A
+rather more interesting problem is that of devising suitable circuits
+to eliminate ridiculous combinations. For example, no letter must
+occur more than three times in succession.\rq{}
+
+\lq{}Three? Surely you mean two.\rq{}
+
+\lq{}Three is correct: I am afraid it would take too long to explain why, even if you understood our language.\rq{}
+\end{quotation}
+
+\end{document}
