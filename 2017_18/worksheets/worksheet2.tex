@@ -26,8 +26,8 @@
 \subsection*{Algorithms Worksheet 2}
 
 For each part of a question write the answer and include
-workings. Question one and three are worth two marks, question two is
-worth four, there are also two marks for attendance.
+workings. Questions are worth two marks each, there are also two marks
+for attendance.
 
 \begin{enumerate}
 
@@ -43,7 +43,7 @@ with $T(0)=1$.
 
 Substitute in $T(n)=A(-1)^n+B$ to get
 \begin{equation}
-A(-1!)^n+B=-A(-1)^{n-1)-B+4
+A(-1)^n+B=-A(-1)^{n-1}-B+4
 \end{equation}
 so $2B=4$ or $B=2$; now $T(n)=A(-1)^n+2$ so $1=T(0)=A+2$ and hence $A=-1$.
 
@@ -97,7 +97,7 @@ T(n)=1-(-1)^n
 
 \ifanswers
 
-\noindent Solutions: for the first one $\log_5{25}=2$ and $c=2$ so
+\noindent Solution: for the first one $\log_5{25}=2$ and $c=2$ so
 this is the middle case and $T(n)\in \Theta(n^2\log n)$, for the
 second $\log_5 20>1$ so it is the first case and $T(n)\in
 \Theta(n^{\log_5{20}})$; the last one is in the middle case as well
@@ -105,6 +105,50 @@ since $\log_2{16}=4$ and $T(n)\in \Theta(n^4\log{n})$.
 
 \fi
 
+\item Bubble sort $(3,5,2,8,4)$ showing each step.
+
+\ifanswers
+\noindent Solution:
+
+\begin{tabular}{ccccc}
+3&5&2&8&4\\
+3&2&5&8&4\\
+3&2&5&4&8\\
+2&3&5&4&8\\
+2&3&4&5&8
+\end{tabular}
 \end{enumerate}
+\fi
+
+\noindent Extra question to do at home if you want: write a recursive
+version of quicksort to show that in the worst case
+\begin{equation}
+T(n)=T(n-1)+cn
+\end{equation}
+
+\noindent Solution:
+
+\begin{lstlisting}[numbers=left]
+void swap(int a[],int i, int j)
+{
+   int temp=a[i];
+   a[i]=a[j];
+   a[j]=temp;
+}
+
+
+void bubble(int a[], int n)
+{
+
+  if n=0 return;
+
+  for(i=0;i<n-1;i++){
+    if(a[i]>a[i+1]){
+      swap(a,i,i+1);	    
+    }
+  }
+  bubble(int a[], int n-1)
+}
+\end{lstlisting}
 
 \end{document}
