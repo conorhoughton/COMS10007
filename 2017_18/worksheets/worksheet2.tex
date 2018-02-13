@@ -16,7 +16,8 @@
 \usepackage{color}
 
 \newif\ifanswers
-\answerstrue
+%\answerstrue
+\answersfalse
 
 \lstset{language=C}
 \pagestyle{headings}
@@ -117,14 +118,16 @@ since $\log_2{16}=4$ and $T(n)\in \Theta(n^4\log{n})$.
 2&3&5&4&8\\
 2&3&4&5&8
 \end{tabular}
-\end{enumerate}
-\fi
 
+\fi
+\end{enumerate}
 \noindent Extra question to do at home if you want: write a recursive
 version of quicksort to show that in the worst case
 \begin{equation}
 T(n)=T(n-1)+cn
 \end{equation}
+
+\ifanswers
 
 \noindent Solution:
 
@@ -150,5 +153,5 @@ void bubble(int a[], int n)
   bubble(int a[], int n-1)
 }
 \end{lstlisting}
-
+\fi
 \end{document}
