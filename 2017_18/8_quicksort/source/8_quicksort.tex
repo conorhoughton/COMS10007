@@ -1,3 +1,4 @@
+
 %8_quicksort.tex
 %notes for the course COMS10007 taught at the University of Bristol
 %Conor Houghton conor.houghton@bristol.ac.uk
@@ -137,6 +138,7 @@ bubble (x:y:zs)
   | x > y     = y : bubble (x:zs)
   | otherwise = x : bubble (y:zs)
 bubble xs = xs
+\end{lstlisting}
 \caption{A Haskell bubble sort from Nick W. \label{haskell_bubble}}
 \end{table}
 
@@ -145,7 +147,7 @@ bubble xs = xs
 Quicksort, usually written like that, as one word, is probably the
 most popular sorting algorithm. It was discovered in 1960 by Tony
 Hoare. It works by choosing an element, possibly at random, called the
-partition value or pivot, let's say it has value $p$. The list is then
+partition value or pivot, lets say it has value $p$. The list is then
 split into two piles, elements less than $p$ and elements greater
 than $p$. This is then repeated recursively on each of
 the two piles with the recursion terminating if a pile has only one
