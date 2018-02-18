@@ -13,8 +13,10 @@
 \usepackage{listings}
 \usepackage{color}
 \lstset{language=C}
-\pagestyle{headings}
-\markright{COMS10007 - algorithms 3\_big\_oh (c) - Conor\footnote{\texttt{github.com/conorhoughton/COMS10007}}}
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\lfoot{\texttt{github.com/conorhoughton/COMS10007}}
+\lhead{COMS10007 - algorithms  3\_big\_oh (c) - Conor}
 \begin{document}
 
 \subsection*{3 Big Oh notation}
@@ -162,7 +164,7 @@ that is used in some more mathematical context, basically $f(n)\in
 o(g(n))$ is $f(n)$ is greater than $cg(n)$ for any choice of $c$, if $n$
 is large enough:
 \begin{equation}
-o(g(n))=\{f(n)| \exists n_0>0\in {\bf N}\mbox{ so that }|f(n)|>
+o(g(n))=\{f(n)| \exists n_0>0\in {\bf N}\mbox{ so that }|f(n)|<
 c|g(n)|\,\forall n\ge n_0 \mbox{ and }\forall\,c>0\in {\bf R}\}
 \end{equation}
 
