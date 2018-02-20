@@ -45,11 +45,12 @@ int dijkstra(int a[n][n],int route[n])
   
   int i, available[n], distances[n],current=0,next,min_distance;
 
-  for(i=0;i<n;i++){
-    route[n]=0;
-    available[i]=1;
-    distances[i]=inf;
-  }
+  for(i=0;i<n;i++)
+    {
+      route[n]=0;
+      available[i]=1;
+      distances[i]=inf;
+    }
   
   distances[0]=0;
 
@@ -59,7 +60,7 @@ int dijkstra(int a[n][n],int route[n])
 
       for(i=1;i<n;i++)
 	{
-	  if(available[i]==1&& distances[i]>distances[current]+a[i][current])
+	  if(available[i]&& distances[i]>distances[current]+a[i][current])
 	    {
 	      distances[i]=distances[current]+a[i][current];
 	      route[i]=current;
@@ -70,7 +71,7 @@ int dijkstra(int a[n][n],int route[n])
       min_distance=inf;
       for(i=1;i<n;i++)
 	{
-	  if(available[i]==1&&distances[i]<min_distance) 
+	  if(available[i]&&distances[i]<min_distance) 
 	    {
 	      next=i;
 	      min_distance=distances[i];
@@ -88,13 +89,14 @@ void print_route(int route[n])
   int current=n-1;
 
   while(current!=0)
-    {
+    {      
       char node=97+current;
       printf("%c ",node);
       current=route[current];
     }
 
-  printf("0\n");
+  char node=97+current;
+  printf("%c\n",node);
 }
   
 
