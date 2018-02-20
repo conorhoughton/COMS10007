@@ -93,7 +93,7 @@ $c_1$. These should have been finished up before leaving for the
 subscript-2 nodes. The sequence $a_0b_0a_1d_1a_1c_1d_1d_2$, but even
 if the subscript-2 nodes are all carefully visited,
 $d_2b_2a_2c_2d_2a_2$ before returning to the subscript-0 nodes,
-$a_2c_0$ it is still possible to mess ip by returning to $a_0$ before
+$a_2c_0$ it is still possible to mess up by returning to $a_0$ before
 visiting the edges $c_0d_0b_0c_0$.
 
 Playing with this example shows that the problem is with creating
@@ -206,7 +206,7 @@ there is a choice, this is summarized in Table~\ref{table:fleury}.
 
 The problem Dijkstra's algorithm solves is how to find the shortest
 path through a weighted graph. Consider the graph in
-Fig.~\ref{fig:weighted}; Dijsktra's algorithm solves, for example, the
+Fig.~\ref{fig:weighted}; Dijksktra's algorithm solves, for example, the
 problem of how to go from ($a$) to ($e$) by the shortest route. The
 actual shortest route is given in Fig.~\ref{fig:shortest}.
 
@@ -377,7 +377,7 @@ $\begin{array}{lclc}
 \end{figure}
 
 It would have been easy to keep track during the algorithm of the node
-preceding a given node in the shortest path; this would allow the path to be retraced afterwards. This is shown in Fig.~\ref{fig:path}. A function to implement Dijsktra's algorithm and store the path, can be seen at Table~\ref{c_dijkstra}.
+preceding a given node in the shortest path; this would allow the path to be retraced afterwards. This is shown in Fig.~\ref{fig:path}. A function to implement Dijkstra's algorithm and store the path, can be seen at Table~\ref{c_dijkstra}.
 
 
 \begin{figure}
@@ -504,7 +504,7 @@ int dijkstra(int a[n][n],int route[n])
 
 It is interesting that Dijkstra's algorithm does not use the identity
 of the target node. Starting with the starting node it spreads
-knowlege of the shortest path outwards through the graph and
+knowledge of the shortest path outwards through the graph and
 terminates when the target node is the available node with the
 shortest assigned distance.
 
