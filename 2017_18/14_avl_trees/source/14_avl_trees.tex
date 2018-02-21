@@ -1,6 +1,6 @@
-%15_avl_tree.tex
-%notes for the course PandA1 COMS10002 taught at the University of Bristol
-%2017 Conor Houghton conor.houghton@bristol.ac.uk
+%14_avl_tree.tex
+%notes for the course COMS10007 taught at the University of Bristol
+%Conor Houghton conor.houghton@bristol.ac.uk
 
 %To the extent possible under law, the author has dedicated all copyright 
 %and related and neighboring rights to these notes to the public domain 
@@ -13,8 +13,12 @@
 \usepackage{listings}
 \usepackage{tikz-qtree}
 \lstset{language=C}
-\pagestyle{headings}
-\markright{COMS10001 - PandA2 15\_avl\_tree - Conor}
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\lfoot{\texttt{github.com/conorhoughton/COMS10007}}
+\cfoot{}
+\rhead{\thepage}
+\lhead{COMS10007 - algorithms 14\_avl\_tree (p) - Conor}
 
 \begin{document}
 \tikzset{every tree node/.style={minimum width=2em,draw,circle},
@@ -23,7 +27,7 @@
          {draw,->, edge from parent path={(\tikzparentnode) -- (\tikzchildnode)}},
          level distance=1.5cm}
 
-\subsection*{15 - AVL trees}
+\section*{14 - AVL trees}
 
 An AVL tree is a balanced binary search tree; because it is balanced
 binary search is a $O(\log{n})$ operation. It is named for
@@ -704,7 +708,17 @@ struct node * add_node_r(struct node * here,int new_entry,int * work_needed)
 
 }
 \end{lstlisting}
-\caption{Updating the balance factor. This recursive function uses an int called work\_needed to decide if an addition is resolved. It works down the tree until it finds where to add the new node, this happens at lines 3-7, as it returns up the recursion it updates the balance factors if \textbf{work\_needed} is one, this uses the switch command from lines 14-30, if the balance factor is one then it should be changed to two and a rotation is done to avoid that, if it is zero it is changed to one and if it is -1 it is changed to zero and work needed is set to zero. The right version is similar and can be seen in the overall program \texttt{ AVL\_tree.c}.\label{c_balance}}
+\caption{Updating the balance factor. This recursive function uses an
+  int called work\_needed to decide if an addition is resolved. It
+  works down the tree until it finds where to add the new node, this
+  happens at lines 3-7, as it returns up the recursion it updates the
+  balance factors if \textbf{work\_needed} is one, this uses the
+  switch command from lines 14-30, if the balance factor is one then
+  it should be changed to two and a rotation is done to avoid that, if
+  it is zero it is changed to one and if it is -1 it is changed to
+  zero and work needed is set to zero. The right version is similar
+  and can be seen in the overall program \texttt{
+    AVL\_tree.c}.\label{c_balance}}
 \end{table}
 
 
