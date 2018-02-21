@@ -1,6 +1,6 @@
-%14_binary_tree.tex
-%notes for the course PandA1 COMS10002 taught at the University of Bristol
-%2017 Conor Houghton conor.houghton@bristol.ac.uk
+%13_binary_tree.tex
+%notes for the course COMS10007 taught at the University of Bristol
+%Conor Houghton conor.houghton@bristol.ac.uk
 
 %To the extent possible under law, the author has dedicated all copyright 
 %and related and neighboring rights to these notes to the public domain 
@@ -13,8 +13,12 @@
 \usepackage{listings}
 \usepackage{tikz-qtree}
 \lstset{language=C}
-\pagestyle{headings}
-\markright{COMS10001 - PandA2 14\_binary\_tree - Conor}
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\lfoot{\texttt{github.com/conorhoughton/COMS10007}}
+\cfoot{}
+\rhead{\thepage}
+\lhead{COMS10007 - algorithms 13\_binary\_tree (o)- Conor}
 
 \tikzset{every tree node/.style={minimum width=2em,draw,circle},
          blank/.style={draw=none},
@@ -24,7 +28,7 @@
 
 \begin{document}
 
-\subsection*{14 - binary trees\footnote{\texttt{http://github.com/conorhoughton/COMS10001}}}
+\section*{13 - binary trees}
 
 A binary tree is a data structure somewhat similar to a linked list
 except each node leads on to up to two other node, rather than just
