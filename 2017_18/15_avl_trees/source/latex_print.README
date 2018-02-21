@@ -1,0 +1,11 @@
+
+The AVL tree contains a function called "latex_print" which creates a
+latex file which draws the tree. For this to work you need to have
+installed the tikz package; in the ubuntu repositories this is
+included in the texlive-picture package, for example. In AVL_tree.c
+latex_print is called with the argument "tree.tex" so it creates a
+file called tree.tex, running
+
+pdflatex tree.tex
+
+should make a pdf called tree.pdf which will show the tree.
