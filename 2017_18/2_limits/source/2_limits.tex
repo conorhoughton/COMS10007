@@ -13,8 +13,10 @@
 \usepackage{listings}
 \usepackage{color}
 \lstset{language=C}
-\pagestyle{headings}
-\markright{COMS10007 1\_limits (d) - Conor\footnote{\texttt{github.com/conorhoughton/COMS10007}}}
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\lfoot{\texttt{github.com/conorhoughton/COMS10007}}
+\lhead{COMS10007 - algorithms 2\_limits (d) - Conor\footnote{\texttt{github.com/conorhoughton/COMS10007}}}
 \definecolor{dark-gray}{gray}{0.25}
 \begin{document}
 
@@ -148,7 +150,15 @@ and, for example
 
 The other method for calculating limits is l'H\^{o}pital's rule. If 
 \begin{equation}
-\lim_{x\rightarrow \infty}f(x)=\lim_{x\rightarrow \infty}g(x)=\infty
+\lim_{x\rightarrow \infty}f(x)=\pm\infty
+\end{equation}
+and
+\begin{equation}
+\lim_{x\rightarrow \infty}g(x)=\pm\infty
+\end{equation}
+or
+\begin{equation}
+\lim_{x\rightarrow \infty}f(x)=\lim_{x\rightarrow \infty}g(x)=0
 \end{equation}
 then
 \begin{equation}
