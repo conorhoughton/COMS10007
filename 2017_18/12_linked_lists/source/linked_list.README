@@ -1,0 +1,22 @@
+In addition to the operations discuss in the lectures, this code
+contains the function delete_node which deletes the node with a
+particular entry. Notice the fiddliness of dealing with the head; if
+the head were deleted there would be no link to the list, so instead,
+if you want to delete the head you copy the entry from the second node
+back to the head and delete the second node. This program doesn't
+behave elegantly if there is only one node and you delete it. In fact,
+a better version of this program would have an int which is returned
+one if the operation is successful and zero if it fails.
+
+The linked list doesn't have a function for deleting a node, only for
+deleting the next node. This is because to delete a node you need to
+change the pointer in the preceding node to point to the node after
+the one you are deleting and there is no access to that from the
+current node. A function for deleting a node would have to also know
+the head and iterate forwards from that until it finds
+iterator->next==(node to be deleted), this would be an O(n) operation,
+whereas delete_next is O(1). This problem is solved in a doubly linked
+list where each node knows the next node and the previous node and
+iterators can move both ways. 
+
+WRITE CODE FOR A DOUBLY LINKED LIST WITH AN O(1) DELETE FUNCTION.

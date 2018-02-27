@@ -1,0 +1,63 @@
+\documentclass{beamer}
+\usepackage{listings}
+\lstset{language=C}
+
+\begin{document}
+
+\subsection*{11 - binary trees}
+\begin{frame}[fragile]{Node}
+\begin{lstlisting}[numbers=left]
+struct node
+{
+  int entry;
+  struct node *left;
+  struct node *right;
+};
+\end{lstlisting}
+\end{frame}
+\begin{frame}[fragile]{Making node}
+\begin{lstlisting}[numbers=left]
+struct node * make_node(int new_entry)
+{
+  struct node * a;
+  a=(struct node *)malloc(sizeof(struct node));
+  a->entry=new_entry;
+
+  return a;
+}
+\end{lstlisting}
+\end{frame}
+\begin{frame}[fragile]{Add node}
+\begin{lstlisting}[numbers=left]
+struct node * add_node(struct node * here,int e)
+{
+
+  if(here==NULL)
+    return make_node(e);
+
+  if(e<here->entry)
+      here->left = add_node(here->left,e);
+  else
+      here->right = add_node(here->right,e);
+  return here;
+
+}
+\end{lstlisting}
+\end{frame}
+\begin{frame}[fragile]{Find a node}
+\begin{lstlisting}[numbers=left]
+struct node * find_entry(struct node* root, int a)
+{
+  if(root==NULL)
+    return root;
+  else if(root->entry==a)
+    return root;
+
+  if(root->entry>a)
+    return find_entry(root->left,a);
+  return find_entry(root->right,a);
+}
+\end{lstlisting}
+\end{frame}
+
+\end{document}

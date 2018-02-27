@@ -1,0 +1,94 @@
+\documentclass{beamer}
+\usepackage{listings}
+\lstset{language=C}
+
+\begin{document}
+
+\subsection*{10 - linked list}
+\begin{frame}[fragile]{Node}
+\begin{lstlisting}[numbers=left]
+struct node
+{
+  int entry;
+  struct node *next;
+};
+\end{lstlisting}
+\end{frame}
+\begin{frame}[fragile]{Making the head}
+\begin{lstlisting}[numbers=left]
+struct node * make_head(int new_entry)
+{
+  struct node * head;
+  head=(struct node *)malloc(sizeof(struct node));
+  head->entry=new_entry;
+  head->next=NULL;
+  return head;
+}
+\end{lstlisting}
+\end{frame}
+\begin{frame}[fragile]{Print}
+\begin{lstlisting}[numbers=left]
+void print_list(struct node * iterator)
+{
+  while(iterator->next!=NULL)
+    {
+      printf("%d\n",iterator->entry);
+      iterator=iterator->next;
+    }
+
+  printf("%d\n",iterator->entry);
+}
+\end{lstlisting}
+\end{frame}
+\begin{frame}[fragile]{Locate an entry}
+\begin{lstlisting}[numbers=left]
+struct node * locate(struct node * it, int num)
+{
+  while(it->next!=NULL)
+    {
+      if(it->entry==num)
+         return it;
+      it=it->next;
+    }
+  if(it->entry==num)
+    return it;
+
+  return NULL;
+}
+\end{lstlisting}
+\end{frame}
+\begin{frame}[fragile]{Adding a node}
+\begin{lstlisting}[numbers=left]
+void add_node(struct node * here, int new_entry)
+{
+  struct node * here_next=here->next;
+  here->next = make_head(new_entry);
+  here->next->next=here_next;
+}
+\end{lstlisting}
+\end{frame}
+\begin{frame}[fragile]{Appending a node}
+\begin{lstlisting}[numbers=left]
+void append_node(struct node * head, int new_entry)
+{
+  while(head->next!=NULL)
+    head=head->next;
+  head->next = add_head(new_entry);
+}
+\end{lstlisting}
+\end{frame}
+\begin{frame}[fragile]{Deleting the next node}
+\begin{lstlisting}[numbers=left]
+void delete_next(struct node * here)
+{
+  if(here->next==NULL)
+    return;
+
+  struct node * temp=here->next;
+  here->next=here->next->next;
+  free(temp);
+}
+\end{lstlisting}
+\end{frame}
+
+\end{document}

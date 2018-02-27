@@ -1,0 +1,128 @@
+\documentclass{beamer}
+\usepackage{listings}
+\lstset{language=C}
+
+\begin{document}
+
+\subsection*{12 - avl trees}
+\begin{frame}[fragile]{Node}
+\begin{lstlisting}[numbers=left]
+struct node
+{
+  int entry;
+  int balance;
+  struct node *left;
+  struct node *right;
+};\end{lstlisting}
+\end{frame}
+\begin{frame}[fragile]{Make node}
+\begin{lstlisting}[numbers=left]
+struct node * make_node(int new_entry)
+{
+  struct node * a_node=(struct node *)malloc(sizeof(struct node));
+  a_node->entry=new_entry;
+  a_node->balance=0;
+
+  return a_node;
+}
+\end{lstlisting}
+\end{frame}
+\begin{frame}[fragile]{LL rotation}
+\begin{lstlisting}[numbers=left]
+struct node * rotate_ll(struct node * here)
+{
+  struct node * left = here->left;
+  here->left=left->right;
+  left->right=here;
+  here->balance=0;
+  here=left;
+  here->balance=0;
+
+  return here;
+}
+\end{lstlisting}
+\end{frame}
+\begin{frame}[fragile]{RR rotation 1}
+\begin{lstlisting}[numbers=left]
+struct node * rotate_lr(struct node * here)
+{
+  struct node * left=here->left;
+  struct node * left_right=left->right;
+
+  left->right=left_right->left;
+  left_right->left=left;
+
+  here->left=left_right->right;
+  left_right->right=here;
+\end{lstlisting}
+\end{frame}
+\begin{frame}[fragile]{RR rotation 2}
+\begin{lstlisting}[numbers=left, firstnumber=11]
+  if(left_right->balance==1)
+    here->balance=-1;
+  else
+    here->balance=0;
+  
+  if(left_right->balance==-1)
+    left->balance=1;
+  else
+    left->balance=0;
+		  
+  here=left_right;
+  here->balance=0;
+  
+  return here;
+}
+\end{lstlisting}
+\end{frame}
+\begin{frame}[fragile]{Balance factors - overall structure}
+\begin{lstlisting}[numbers=left]
+struct node * add_node_r(struct node * here,
+                         int new_entry,
+                         int * work_needed)
+{
+  if(here==NULL)
+    {
+      *work_needed = 1;
+      return make_node(new_entry);
+    }
+  if(new_entry<here->entry)
+    LEFT STUFF  
+  else
+    RIGHT STUFF
+ 
+  return here;
+}
+\end{lstlisting}
+\end{frame}
+\begin{frame}[fragile]{Balance factors - LEFT STUFF 1}
+\begin{lstlisting}[numbers=left]
+  here->left = add_node_r(here->left,new_entry,
+                          work_needed);
+  if(*work_needed)
+  {
+    switch(here->balance)
+    {
+      case -1:
+        here->balance=0;
+        *work_needed=0;
+        return here;
+      case 0:
+        here->balance=1;
+        return here;
+\end{lstlisting}
+\end{frame}
+\begin{frame}[fragile]{Balance factors - LEFT STUFF 2}
+\begin{lstlisting}[numbers=left, firstnumber=14]
+      case 1:
+        if(here->left->balance==1)
+          here=rotate_ll(here);
+        else
+          here=rotate_lr(here);
+        *work_needed=0;
+        return here;
+    }
+  }
+\end{lstlisting}
+\end{frame}
+\end{document}

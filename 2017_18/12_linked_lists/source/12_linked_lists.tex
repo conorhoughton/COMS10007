@@ -1,0 +1,229 @@
+%12_linked_lists.tex
+%notes for the course COMS10007 taught at the University of Bristol
+%Conor Houghton conor.houghton@bristol.ac.uk
+
+%To the extent possible under law, the author has dedicated all copyright 
+%and related and neighboring rights to these notes to the public domain 
+%worldwide. These notes are distributed without any warranty. 
+
+\documentclass[11pt,a4paper]{scrartcl}
+\typearea{12}
+\usepackage{graphicx}
+\usepackage{pstricks}
+\usepackage{listings}
+\lstset{language=C}
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\lfoot{\texttt{github.com/conorhoughton/COMS10007}}
+\cfoot{}
+\rhead{\thepage}
+\lhead{COMS10007 - algorithms 12\_linked\_lists (o) - Conor}
+\newcommand{\pter}{-$>$}
+
+\begin{document}
+
+\section*{12 - linked lists\footnote{\texttt{http://github.com/conorhoughton/COMS10001}}}
+
+A data structure is a way of organizing and storing information on a
+computer. Modern computer languages often have a selection of in-built
+data structures, usually as a library. Here we will look at some of
+the most common structures and implement them, by hand, in c. We will
+see that different data structures are suited to different tasks. For
+example, so far we have been using arrays in which the elements are
+accessed by index, if you want the ith entry of a you write a[i] and
+so access is $O(1)$. However, adding an element to the middle of an
+array is hard since lots of elements have to be moved to make
+room. This is illustrated in Table~\ref{table_reindexing}, adding an
+entry is an $O(n)$ operation.
+
+\begin{table}[b]
+\begin{tabular}{cccc cccc}
+0&1&2&3&4&5&6&7\\
+a&b&c&e&f&g&h&\\
+a&b&c&e&f&g&&h\\
+a&b&c&e&f&&g&h\\
+a&b&c&e&&f&g&h\\
+a&b&c&&e&f&g&h\\
+a&b&c&d&e&f&g&h
+\end{tabular}
+\caption{A schematic intended to illustrate the difficulty of adding the entry d to position 3 of an array, e-h first have to be moved to make room.\label{table_reindexing}}
+\end{table}
+
+Often, in fact, you don't need to access elements by index; you might
+just need to go through them one-by-one in order but want to be able
+to add extra elements in different locations. For this you can use a
+linked list, which will be described below: accessing a specified
+element is an $O(n)$ operation, but accessing each element one-by-one
+in turn, is also $O(n)$ and adding an extra element is $O(1)$.
+
+\subsubsection*{Linked list}
+
+A linked list is a data structure in which each entry is stored in a
+node which also stores the location of the next node. There is no
+index, so it isn't possible to access the entry in the $i$th node
+directly, in the way you can access the $i$th entry in an
+array. However, since each node knows the location of the next one,
+you can go through the nodes in turn.
+
+For example, lets use an arrow to illustrate one node knowing the
+location of the next, a linked list storing the entries $[3,1,9,10,4]$
+would look like
+\begin{equation}
+3\rightarrow 1\rightarrow 9\rightarrow 10\rightarrow \times
+\end{equation}
+where the last node points to nothing, here illustrated with a
+$\times$ and, in practice in c it is implemented as a NULL pointer. Now,
+assuming the location of the first node, often called the \textsl{head},
+is known, it can be accessed to find its entry, 3, and the location of
+the next entry, indicated here by the arrow, this in turn can be
+accessed to give the entry, 1, and the location of the next node. This
+continues until the last node is identified by its NULL pointer. 
+
+\begin{table}
+\begin{lstlisting}[numbers=left]
+struct node
+{
+  int entry;
+  struct node *next;
+};
+\end{lstlisting}
+\caption{A node. This is a node of a linked list for storing ints. It
+  contains two variables, entry which stores the actual entry and
+  next, which is a pointer to a node, this is the link. \label{c_node}}
+\end{table}
+
+\begin{table}
+\begin{lstlisting}[numbers=left]
+struct node * make_head(int new_entry)
+{
+  struct node * head = (struct node *)malloc(sizeof(struct node));
+  head->entry=new_entry;
+  head->next=NULL;
+  return head;
+}
+\end{lstlisting}
+\caption{A function for making the head. In line three a new node is
+  created on the heap with a pointer to it called head. The entry for
+  head is given the correct value, note that head is pointer, so its
+  entry is head-$>$entry. \label{c_head}}
+\end{table}
+
+
+A struct for a node in a linked list is given in
+Table~\ref{c_node}. When making a linked list you need first of all a
+head, a node whose address you know. There is a function for making
+the head in Table~\ref{c_head}. Now, after that the locations of the
+subsequent nodes are the business of the linked list, the person using
+the linked list only has to know the location of head, the location of
+the other nodes is stored in the nodes themselves.
+
+
+\begin{table}
+\begin{lstlisting}[numbers=left]
+void print_list(struct node * iterator)
+{
+  while(iterator->next!=NULL)
+    {
+      printf("%d\n",iterator->entry);
+      iterator=iterator->next;
+    }
+
+  printf("%d\n",iterator->entry);
+}
+\end{lstlisting}
+\caption{A function to print out the entries. Notice that when
+  iterator-$>$next=NULL it doesn't print out the entry in iterator,
+  that's why there are two printf statements.\label{c_print}}
+\end{table}
+
+\begin{table}
+\begin{lstlisting}[numbers=left]
+struct node * locate(struct node * iterator, int target)
+{
+  while(iterator->next!=NULL)
+    {
+      if(iterator->entry==target)
+	return iterator;
+      iterator=iterator->next;
+    }
+  if(iterator->entry==target)
+    return iterator;
+
+  return NULL;
+}
+\end{lstlisting}
+\caption{A function to return the location of the node containing target. If target isn't found it returns NULL.\label{c_locate}}
+\end{table}
+
+
+Now, to iterate through the list is simply a matter of moving along
+it. In Table~\ref{c_print} there is a function for printing out all
+the elements. It starts at the head and then goes to head-$>$next and
+keeps going until head-$>$next==NULL. Another iterator is given in
+Table~\ref{c_locate}, this locates an entry and returns a pointer to
+its node.
+
+
+\begin{table}
+\begin{lstlisting}[numbers=left]
+void add_node(struct node * here, int new_entry)
+{
+  struct node * here_next=here->next;
+  here->next = make_head(new_entry);
+  here->next->next=here_next;
+}
+\end{lstlisting}
+\caption{Add a node after
+  \textbf{here}. \textbf{here\_next} stores the
+  location of \textbf{here\pter next}, the new node is added at
+  \textbf{here\pter next} and this new node's \textbf{next}, what is now
+  \textbf{here\pter next\pter next}, is set to
+  \textbf{here\_next}.\label{c_add}}
+\end{table}
+
+\begin{table}
+\begin{lstlisting}[numbers=left]
+void append_node(struct node * head, int new_entry)
+{
+  while(head->next!=NULL)
+    head=head->next;
+  head->next = add_head(new_entry);
+}
+\end{lstlisting}
+\caption{Append a node. This goes to the end of the list and adds the
+  new node there.\label{c_append}}
+\end{table}
+
+Adding an entry is mostly a matter of moving around the links. Say we
+had the address of 9 in
+\begin{equation}
+3\rightarrow 1\rightarrow 9\rightarrow 10\rightarrow \times
+\end{equation}
+ and wanted to add a node containing 12 between 9 and 10. First we would store the address of 10 somewhere and add a new node at the end of the arrow from 9
+\begin{equation}
+3\rightarrow 1\rightarrow 9\rightarrow \_(\rightarrow)10\rightarrow \times
+\end{equation}
+where the $\rightarrow$ in brackets is to indicate that the location
+of the node with 10 has been stored. Then, in the new node the entry
+is set equal to 12 and the link is set pointing to the node with 10, giving
+\begin{equation}
+3\rightarrow 1\rightarrow 9\rightarrow 12\rightarrow 10\rightarrow \times
+\end{equation}
+Code to do this is in Table~\ref{c_add}, in Table~\ref{c_append} is
+code for the related operation of adding a new node at the end. Deleting the node next to a node is done in a similar way, consider
+\begin{equation}
+3\rightarrow 1\rightarrow 9\rightarrow 10\rightarrow \times
+\end{equation}
+and say you wanted to delete the node after the one which stores 1. First you store the link to the node holding 10
+\begin{equation}
+3\rightarrow 1\rightarrow 9(\rightarrow) 10\rightarrow \times
+\end{equation}
+Then the node holding 9 is deleted
+\begin{equation}
+3\rightarrow 1\quad \not9(\rightarrow) 10\rightarrow \times
+\end{equation}
+and then you set the node with 1 to point to the one with 10
+\begin{equation}
+3\rightarrow 1\rightarrow 10\rightarrow \times
+\end{equation}
+\end{document}
