@@ -1,6 +1,6 @@
-%10_adverserial_search.tex
-%notes for the course PandA2 COMS10001 taught at the University of Bristol
-%2016-7 Conor Houghton conor.houghton@bristol.ac.uk
+%15_adverserial_search.tex
+%notes for the course COMS10007 taught at the University of Bristol
+%Conor Houghton conor.houghton@bristol.ac.uk
 
 %To the extent possible under law, the author has dedicated all copyright 
 %and related and neighboring rights to these notes to the public domain 
@@ -9,14 +9,20 @@
 \documentclass[11pt,a4paper]{scrartcl}
 \typearea{12}
 \usepackage{graphicx}
+\usepackage{pstricks}
 \usepackage{listings}
 \usepackage{tikz-qtree}
 \lstset{language=C}
-\pagestyle{headings}
-\markright{COMS10001 - PandA2 10\_adversarial\_search - Conor}
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\lfoot{\texttt{github.com/conorhoughton/COMS10007}}
+\cfoot{}
+\rhead{\thepage}
+\lhead{COMS10007 - algorithms 15\_adversarial\_search (q) - Conor}
+
 \begin{document}
 
-\subsection*{10 - adversarial search\footnote{\texttt{http://github.com/conorhoughton/COMS10001}}}
+\section*{15 - adversarial search}
 
 Here we will consider adversarial search: algorithms designed to allow
 a computer to develop an optimal strategy for an adversarial game, or
@@ -50,9 +56,9 @@ plays optimally. It is easiest to describe this through an example.
 
 Nim is a simple game using counters for two players; the counters are
 divided into some number of piles and the players take turns removing
-counters. In a go a player must take at least one counter and can take
+counters. In their turn a player must take at least one counter and can take
 as many counters as they like, provided they only come from one
-pile. Thus, in each go each player removes counters from only one
+pile. Thus, in each turn each player removes counters from only one
 pile. The winner is the player who takes the last piece. An example
 game is given in Table~\ref{tab:nim_example}
 
@@ -139,7 +145,7 @@ different levels are sometimes called \textsl{ply} in this context.
   equivalent choices have been left out, so it includes $(1,2,2)$ on
   the second ply, but not $(2,1,2)$; for clarity the triples are
   arranges in ascending order. Alternative ply are bolded to help keep
-  track of who is playing, Aoife is bold, whereas opponent is
+  track of who is playing, Aoife is bold, whereas her opponent is
   unbolded, so for a bolded node Aoife takes the next
   move. \label{fig:nim}}
 \end{figure}
@@ -151,8 +157,6 @@ Fig.~\ref{fig:nim-leaves}; the problem is that the leaves are far
 removed from the current move, Aoife is at $(2,2,2)$ and decided
 between $(1,2,2)$ and $(0,2,2)$; we need to move the scoring up from
 the leaves to the root.
-
-
 
 \begin{figure}
 \begin{center}
@@ -446,9 +450,8 @@ difference between the two players. Now, in this scheme, each leaf is
 evaluated using the heuristic and the score is propagated backwards
 under the assumption that each player plays optimally.
 
-Since we haven't studied data structures yet we can't really consider
-an implementation of minimax, however a sketch of such a program is
-given in Table~\ref{c_minimax}.
+A sketch of a program implementing minimax is given in
+Table~\ref{c_minimax}.
    
 \begin{table}
 \begin{lstlisting}[numbers=left]
