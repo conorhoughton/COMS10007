@@ -13,18 +13,18 @@
 \typearea{12}
 \usepackage{graphicx}
 \usepackage{pstricks}
-%\usepackage{tikz-qtree}
+\usepackage{tikz-qtree}
 \usepackage{listings}
 \usepackage{color}
 
 \newif\ifanswers
-%\answerstrue
-\answersfalse
+\answerstrue
+%\answersfalse
 
 
 \lstset{language=C}
 \pagestyle{headings}
-\markright{COMS10007 - algorithms worksheet 5 - Conor}
+\markright{COMS10007 - algorithms worksheet 4 - Conor}
 \begin{document}
 
 \subsection*{Algorithms Worksheet 4}
@@ -63,6 +63,9 @@ So first of all we draw the tree, unbold marks the first player.
         [.111
           [.\textbf{110} 100 ]
         ]
+         [.110
+          [.\textbf{100} ]
+]
       ]
       [.\textbf{111} 
         [.110 \textbf{100} ]
@@ -94,7 +97,10 @@ Now, mark the wins for unbold at +1 and for bold as -1.
         [.111
           [.\textbf{110} +1 ]
         ]
-      ]
+        [.110
+          [.-1 ]
+        ] 
+     ]
       [.\textbf{111} 
         [.110 -1 ]
       ]
@@ -125,6 +131,9 @@ and now we propagate those scores upwards, assuming unbold choses the +1 and -1 
         [.111
           [.+1 +1 ]
         ]
+        [.-1
+          [.-1 ]
+        ] 
       ]
       [.\textbf{111} 
         [.-1 -1 ]
@@ -148,7 +157,7 @@ and
         [.-1 -1 ]
         [.+1 ]
       ]
-      [.+1 
+      [.-1 
         [.+1
           [.-1 ]
           [.-1 ]
@@ -157,6 +166,9 @@ and
         [.+1
           [.+1 +1 ]
         ]
+ [.-1
+          [.-1 ]
+        ] 
       ]
       [.-1 
         [.-1 -1 ]
@@ -165,7 +177,7 @@ and
     ]
 \end{tikzpicture}
 \end{center}
-so the first player can win if they go to $(2,1,1)$ or $(1,1,0)$.
+so the first player can win if they go along the right.
 \fi
 
 \end{document}
