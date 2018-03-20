@@ -1,6 +1,6 @@
 %16_binary_heap.tex
-%notes for the course PandA1 COMS10002 taught at the University of Bristol
-%2017 Conor Houghton conor.houghton@bristol.ac.uk
+%notes for the course COMS10007 taught at the University of Bristol
+%Conor Houghton conor.houghton@bristol.ac.uk
 
 %To the extent possible under law, the author has dedicated all copyright 
 %and related and neighboring rights to these notes to the public domain 
@@ -13,8 +13,12 @@
 \usepackage{listings}
 \usepackage{tikz-qtree}
 \lstset{language=C}
-\pagestyle{headings}
-\markright{COMS10001 - PandA2 16\_binary\_heap - Conor}
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\lfoot{\texttt{github.com/conorhoughton/COMS10007}}
+\cfoot{}
+\rhead{\thepage}
+\lhead{COMS10007 - algorithms 16\_binary\_heap - Conor}
 
 \begin{document}
 \tikzset{every tree node/.style={minimum width=2em,draw,circle},
@@ -23,7 +27,7 @@
          {draw,->, edge from parent path={(\tikzparentnode) -- (\tikzchildnode)}},
          level distance=1.5cm}
 
-\subsection*{16 - binary heap DRAFT}
+\section*{16 - binary heap}
 
 A binary heap is a data structure which allows elements to be easily
 added and removed while keeping track of the largest element. They are
@@ -82,7 +86,6 @@ a binary heap is an efficient way to keep track of the biggest element
 if elements are continually being added and removed, and, in
 particular if the biggest element is often removed, as it is in a
 priority queue.
-
 
 Let's first of all consider adding a new item to a binary heap. For
 neatness imagine we have the rule that we fill the lowest level from
