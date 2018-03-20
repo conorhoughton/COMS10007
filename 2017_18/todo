@@ -5,4 +5,7 @@ this with 4_search. - DONE
 
 do code for Fleurys algorithm - suggested c++ code already supplied by student
 
-do code for adversarial search
+do code for adversarial search - probably not needed since is in any
+case very problem dependent and its covered in OO, maybe just do nim?
+
+do code for binary heap
