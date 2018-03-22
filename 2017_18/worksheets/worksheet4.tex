@@ -18,8 +18,8 @@
 \usepackage{color}
 
 \newif\ifanswers
-\answerstrue
-%\answersfalse
+%\answerstrue
+\answersfalse
 
 
 \lstset{language=C}
@@ -50,6 +50,7 @@ So first of all we draw the tree, unbold marks the first player.
         [.210
           [.\textbf{200} ]
           [.\textbf{110} 100 ]
+          [.\textbf{100} ]
         ]
         [.110 \textbf{100} ]
         [.100 ]
@@ -84,6 +85,7 @@ Now, mark the wins for unbold at +1 and for bold as -1.
         [.210
           [.-1 ]
           [.\textbf{110} +1 ]
+          [.-1 ]
         ]
         [.110 -1 ]
         [.+1 ]
@@ -118,6 +120,7 @@ and now we propagate those scores upwards, assuming unbold choses the +1 and -1 
         [.210
           [.-1 ]
           [.+1 +1 ]
+          [.-1 ]
         ]
         [.-1 -1 ]
         [.+1 ]
@@ -153,6 +156,7 @@ and
         [.+1
           [.-1 ]
           [.+1 +1 ]
+          [.-1 ]
         ]
         [.-1 -1 ]
         [.+1 ]
