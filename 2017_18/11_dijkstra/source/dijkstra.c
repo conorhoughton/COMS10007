@@ -47,7 +47,7 @@ int dijkstra(int a[n][n],int route[n])
 
   for(i=0;i<n;i++)
     {
-      route[n]=0;
+      route[i]=0;
       available[i]=1;
       distances[i]=inf;
     }

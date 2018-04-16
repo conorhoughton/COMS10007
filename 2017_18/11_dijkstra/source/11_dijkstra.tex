@@ -1,4 +1,4 @@
-%12_dijkstra.tex
+%11_dijkstra.tex
 %notes for the course COMS10007 taught at the University of Bristol
 %Conor Houghton conor.houghton@bristol.ac.uk
 
@@ -17,12 +17,12 @@
 \usepackage{fancyhdr}
 \pagestyle{fancy}
 \lfoot{\texttt{github.com/conorhoughton/COMS10007}}
-\lhead{COMS10007 - algorithms 11\_dijkstra (n) - Conor}
 \cfoot{}
 \rhead{\thepage}
+\lhead{COMS10007 - algorithms 11\_dijkstra (n) - Conor}
 \begin{document}
 
-\section*{12- Two constructive algorithms}
+\section*{11- Two constructive algorithms}
 
 In these notes we will learn about two constructive algorithms; the
 first, Fleury's Algorithm, allows an Eulerian path to be constructed
@@ -470,7 +470,7 @@ int dijkstra(int a[n][n],int route[n])
   int i, available[n], distances[n],current=0,next,min_distance;
 
   for(i=0;i<n;i++) {
-    route[n]=0;
+    route[i]=0;
     available[i]=1;
     distances[i]=inf;
   }
