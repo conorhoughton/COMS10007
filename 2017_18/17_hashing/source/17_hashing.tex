@@ -1,0 +1,182 @@
+%17_hashing.tex
+%notes for the course COMS10007 taught at the University of Bristol
+%Conor Houghton conor.houghton@bristol.ac.uk
+
+%To the extent possible under law, the author has dedicated all copyright 
+%and related and neighboring rights to these notes to the public domain 
+%worldwide. These notes are distributed without any warranty. 
+
+\documentclass[11pt,a4paper]{scrartcl}
+\typearea{12}
+\usepackage{graphicx}
+\usepackage{pstricks}
+\usepackage{listings}
+\usepackage{tikz-qtree}
+\lstset{language=C}
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\lfoot{\texttt{github.com/conorhoughton/COMS10007}}
+\cfoot{}
+\rhead{\thepage}
+\lhead{COMS10007 - algorithms 17\_hashing - Conor}
+
+\begin{document}
+
+\section*{17 - hashing}
+
+A hash table is a quick way to access stored data; it is a frequently
+used and invaluable way to store date. It works by using the key
+itself as an instruction for finding the storage location.
+
+In a hash table we have a \textbf{key}, a word in our case, and a
+\textbf{node} which stores the information we want to associate with
+the key along with a copy of the key itself. For definiteness we will
+imagine here that the key is a word. The idea behind a hash table is
+to store the nodes in an array, we will have to change this slightly,
+but imagine each node has an index, so, if the array was called
+\texttt{hash\_array}, there would be nodes located at
+\texttt{hash\_array[0]}, \texttt{hash\_array[1]} and so on. The
+challenge is to go from the key to the correct index. The simplest
+strategy is to look in each node in turn, stopping when you find the
+correct one. This is clearly very slow, $O(n)$ in fact, if $n$ is the
+number of nodes. Another strategy would be to make a big lookup table
+of all the indices and to use the alphabetic structure of the keys to
+seach it using a binary search algorithm, this would be smart but it
+does rely on the keys having an ordering, they do here when the keys
+are words, but we want to solve the problem in a more general way.
+
+The answer is to find some way of working out the index from the key
+itself, in other words, a hash table starts with a map, called the
+\textbf{hashing function} which maps each key to an index:
+\begin{eqnarray}
+h:\mbox{keys}&\rightarrow&\mbox{indices}\\
+\mbox{key}&\mapsto&h(\mbox{key})
+\end{eqnarray}
+What might this hashing function look like? Well that depends on the
+data, on the type of key, the performance constraints on the problem
+and the amount of data. An obvious, though poor, example for words
+would be to convert the letters into numbers with \texttt{a} going to
+0, \texttt{b} to 1 and so on and then adding the values so
+\begin{equation}
+h(\mbox{\lq{}elbow\rq{}})=4+11+1+14+22=52
+\end{equation}
+Obviously this scheme would have to be changed slightly if there were
+capitals or other letters, so, for example, ascii coeds could be used.
+
+The idea now is to have a big list \texttt{hash\_table} and in this
+table \texttt{hash\_table[52]} would store the node for 'elbow'. The
+crucial point is that the function always gives the same answer when
+applied to 'elbow', it is used to work out where to put the node
+associated with 'elbow' and later to access that node.
+
+One immeadiate challenge is that we might have some large words, like
+zizzerzazzerzuzz, a creature in the Dr Seuss universe;
+\begin{equation}
+h(\mbox{\lq{}zizzerzazzerzuzz\rq{}})=295
+\end{equation}
+Obviously if this index was unexpectedly high and \texttt{hash\_table}
+had less than 296 entries then this would be a problem. This problem
+could be solve by making sure the hash function had a predefined
+range, for example by using \texttt{mod} so
+\begin{equation}
+h(x)=\sum{(\mbox{value of letters in }x)}\% N
+\end{equation}
+where $N$ is the size of \texttt{hash\_table}.
+
+However, this discussion exposes a greater problem: 296 is not a big
+number compared to the number of words and if zizzerzazzerzuzz only
+has the hash value 295 there must be lots of words that share the same
+hash value. Obviously two words that are anagrams of each other have
+the same hash value under this scheme:
+\begin{equation}
+h(\mbox{\lq{}male\rq{}})=h(\mbox{\lq{}lame\rq{}})
+\end{equation}
+This situation can be improved by using a better hash function, the
+one I described above is straightforward but poor. We will examine
+better hash functions later. However, although the number of
+\textbf{collisions}, that is cases were
+\begin{equation}
+h(x_1)=h(x_2)
+\end{equation}
+when $x_1\not=x_2$, can be reduced by using a better clash functions,
+it is very hard to make sure it never happens; perfect hash function
+where there are no collisions are usually slow or impractical in other
+ways.
+
+The answer to this problem is to make \texttt{hash\_table} an array of
+linked lists instead of an array holding the nodes directly. Thus,
+when looking for the node with key $x$, you go to the linked list at
+\texttt{hash\_table[$h(x)$]} and then search down the linked list
+until the node for key $x$ is found. Of course, in fact,
+\texttt{hash\_table} will not be in fact an array of linked lists, the
+items in an array must be of fixed size, so it will be an array of
+pointers to the heads of linked lists. This approach, called
+\textbf{direct chaining}, isn't the only way to deal with the problem
+of collisions, but it is one of the most straight forward.
+
+\subsection*{Some hash functions}
+
+A choice of hash function is context dependent; typically a good hash
+function is one that avoids collisions but this depends on the data,
+different data sets will have different collision frequencies on the
+same data. They also depend on the size of the table, some hash
+functions map to specific numbers of indices. Density is also an
+issue: sometimes it is important that all the indices are used
+evenly. As such, there is no ideal hash function, it will always
+depend on the data and the application.
+
+One popular hash function is Pearson hashing; it only produces 8-bit
+output, in other words, the hash table has to have size 256. It works
+using a look-up table mapping one \texttt{unsigned char} to another,
+in other words, it has a table that maps from one number in
+$\{0,1,2,\ldots,255]$ to another. Different look up tables will
+  produce different hashing functions. It also relies on bitwise xor,
+  bitwise xor often appears in hashing functions, mostly because it is
+  the only binary bitwise operation that does not, on average, alter
+  the number of ones and zeros. What Pearson's hashing does is it
+  takes a starting 8-bit value and bitwise xor's it with the first
+  letter; this gives a \texttt{unsigned char} which is then replaced
+  by another \texttt{unsigned char} using the look-up table. This new
+  value is bitwised xor'd with the second letter and all the steps
+  follow as before. This carries out until the end of the word, with,
+  each time, the letter being bitwise xor'd with the value calculated
+  during the previous step. Example code is give in
+  Table~\ref{c_pearson} and can also be found in the source folder.
+
+\begin{table}
+\begin{lstlisting}[numbers=left]
+
+unsigned char Pearson16(const unsigned char *x) 
+{
+
+  size_t i;
+  
+  unsigned char h;
+
+  size_t len=strlen(x);
+  
+  static const unsigned char lookup_table[256] = {
+
+    A LIST OF ALL THE NUMBERS IN 0-255 IN SOME ORDER
+
+      };
+
+  h = len; //or could initialize at, for example, zero
+
+  for (i = 0; i < len; ++i) {
+
+    h = lookup_table[h ^ x[i]];
+
+  }
+
+  return h;
+
+}
+\end{lstlisting}
+\caption{Pearson hashing. This print out doesn't include T, the lookup
+  table.\label{c_pearson}}
+\end{table}
+
+A hash function that can map to any specified table length is given in the source folder as \texttt{djb2.c}.
+
+\end{document}
