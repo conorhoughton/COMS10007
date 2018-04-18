@@ -1,0 +1,55 @@
+
+the test_*.c programmes were written to test various parts of the program
+and can be ignored.
+
+downhill_simplex.c 
+
+This contains the point struct which holds the coordinate and its
+function value along with functions to deal with these; for example
+set_polated_point works out the point
+
+xo+lambda(xo-x_worst)
+
+This can be used to work out the reflected, extended and contracted
+point by setting lambda = 1, 2 or -0.5 and there are functions to do
+this.
+
+There is a programming dilemma posed by this - should f(x) be
+calculated here or in the main program, clearly f itself belongs in
+the main program but it feels very old-fashioned to force the simplex
+stuff to send x's back to get f(x)'s calcualted. The perhaps
+over-elaborate solution here is to use a function point, this is a
+pointer to a function so the function lives in the main program but
+the simplex functions are given a pointer to it. The syntax for
+function pointers takes a bit of getting used to.
+
+
+latex_triangles.c
+
+If DIM=2 this can be used to make a latex file to show the triangles
+during optimization. 
+
+
+going_down_triangles.c
+
+This runs the program and saves the triangles to triangles.tex. It
+runs for fixed amount of iterations but if the algorithm were being
+used in anger it would normally until some convergence criterion was
+made, for example, if the vertices of the simplex, and the reflected
+point, all had function values within some tolerance of each other.
+
+to compile 
+
+gcc going_down_triangles.c -lm
+
+Then run and 
+
+pdflatex triangles.tex
+
+to get a pdf file showing the individual triangles
+
+and 
+
+pdflatex all_triangles.tex
+
+so see all the triangles together.

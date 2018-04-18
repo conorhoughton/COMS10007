@@ -1,0 +1,510 @@
+%17_downhill_simplex.tex
+%notes for the course PandA2 COMS10001 taught at the University of Bristol
+%2016 Conor Houghton conor.houghton@bristol.ac.uk
+
+%To the extent possible under law, the author has dedicated all copyright 
+%and related and neighboring rights to these notes to the public domain 
+%worldwide. These notes are distributed without any warranty. 
+
+\documentclass[11pt,a4paper]{scrartcl}
+\typearea{12}
+\usepackage{amsmath}
+\usepackage{graphicx}
+\usepackage{pstricks}
+\usepackage{listings}
+\usepackage{tikz}
+\usetikzlibrary{calc,positioning}
+\usetikzlibrary{shapes,arrows}
+\lstset{language=C}
+\pagestyle{headings}
+\markright{COMS10001 - PandA2 13\_downhill\_simplex - Conor}
+
+\begin{document}
+
+\subsection*{17 - downhill simplex}
+
+Along with the data-based algorithms like searching and sorting,
+another broad category of algorithms relates to optimization. These
+are frequently of use in problems where computer scientists are
+working with people from other disciplines rather than working on
+problems that arise out of computer science itself. To an even greater
+extent than the data-based algorithms, the performance of optimization
+algorithms is difficult to assess abstractly, optimization algorithms
+must be assessed in the context of the particular problem they are
+intended to solve.
+
+In a typical optimization problem the goal is to minimize some
+function, $E$ that depends on lots of parameters, so $E(\mathbf{x})$ where
+\begin{equation}
+\mathbf{x}=(x_1,x_2,\ldots,x_n)
+\end{equation}
+$E$ is often called an objective function and the idea is to find the values of $\mathbf{x}$ that minimize $E$.
+
+This problem occurs in a diversity of situations. In physics $E$
+might be an energy function related to the configuration of a
+mechanical system with $\mathbf{x}$ representing the positions of the
+components, or, for a particle physicist, a configuration of fields
+like the electromagnetic field or its generalizations with
+$\mathbf{x}$ representing field values. For someone working on machine
+learning it might measure the error made by a neural network, in this
+situation $E$ is called an error function and $\mathbf{x}$ are the
+parameters describing the neural network. In statistics $E$ might be
+the log-likelihood, a measure of how well a statistical model predicts
+the data. In neuroscience, the model might be a computational model of
+a neuron or synapse and $\mathbf{x}$ would correspond to the
+components of that model, for example the number of each of the
+different types of ion gates. In this example optimization the model
+to fit electro-physiological recording will predict the composition of
+the neuron or synapse.
+
+In any case, the idea is to find the value of $\mathbf{x}$ that gives
+the lowest value of $E(\mathbf{x})$. The best way of doing this
+depends on the dimension of $\mathbf{x}$, on how much is known about
+$E$, on its properties and how easy it is to calculate. The hardest
+optimization problems are often ones where $E$ has many local minima
+so that optimization algorithms end up finding these and missing the
+global minimum. This isn't a problem we are going to discuss here.
+
+\subsubsection*{Some optimization algorithms}
+
+Obviously, if we know the functional form of $E$ we can find its minimum
+using calculus. For example, say
+\begin{equation}
+E(x_1,x_2)=(1-x_1)^2+100(x_2-x_1^2)^2
+\end{equation}
+we would calculate the two partial derivatives and then find the
+optimum point by setting them to zero, so
+\begin{equation}
+\begin{aligned}
+0&=\frac{\partial E}{\partial x_1}=2(1-x_1)-400x_1(x_2-x_1^2)\\
+0&=\frac{\partial E}{\partial x_2}=200(x_2-x_1^2)
+\end{aligned}
+\end{equation}
+which is solved by $x_1=x_2=1$. However, this isn't the sort of
+problem we are thinking about here, we are envisaging situations where
+$E$ cannot be treated analytically like this, so, for example, $E$
+itself must be calculated numerically for a given value of
+$\mathbf{x}$.
+
+Another approach might be to divide the space of $\mathbf{x}$ values
+up into a grid and to check them all; this is known as grid-search and
+is sometimes the best method for problems where $\mathbf{x}$ has only
+a small number of dimensions and $E$ is very quick to
+calculate. However, $E$ might be slow to calculate, for example, in
+neuroscience examples, the model might take quite a while to
+run. Furthermore, the number of grid points may be very large,
+particularly if the variability of $E$ means the grid has to be fine,
+or if the number of dimensions is not small. Often grid search is
+impractical or out of the question.
+
+Another popular set of methods is related to gradient descent. Roughly
+speaking this involves working out which direction is down and heading
+that way. The gradient is a vector pointing in the direction $E$
+increases most, the simplest gradient method is to start at an initial
+value $\mathbf{x}_0$ and iterate
+\begin{equation}
+\mathbf{x}_{n+1}=\mathbf{x}_n-\eta \mathbf{\nabla}E
+\end{equation}
+where ${\nabla}E$ is the gradient and $\eta$ is a, usually small, step
+size. Now, if the functional form of $E$ is known, the gradient can be
+worked out using calculus, and even in situations where $E$ has to be
+calculated numerically it may be possible to find a similar numerical
+scheme to calculate the gradient. This is often the case for error
+functions in machine learning, for example. However, it is not always
+the case that the gradient can be easily estimated; in problems coming
+from neuroscience, for example, the models are highly non-linear and
+there is no easy way to find the gradient.
+
+Even if the gradient is known, gradient descent methods can be
+tricky. One problem is with the size of $\eta$: the scale of the $E$
+landscape can change; often if $\mathbf{x}$ is a long way away from
+the optimal value $E$ is very smooth so it would be useful to take
+long steps, but near the minimum the features become much finer, so
+small steps are needed. If $\eta$ is too small the method spends for
+ages taking tiny steps down the hill side, if it is too big it steps
+right over important features at the bottom. Another problem is with
+thin valleys, if the step size is too large then often successive
+steps oscillate backwards and forwards across the valley rather than
+following it down to the minimum. There are solutions to these
+problems, for example the method called conjugate gradients seeks to
+choose the successive steps to follow the gradient but to avoid the
+sort of repetitive backtracking that can happen at thin valleys.
+
+\subsubsection*{Downhill simplex}
+
+The problem of optimization is a rich and complicated one; here we
+will consider in detail one simple approach: the downhill simplex or
+Nelder-Mead method. For many problems it will not be the fastest way
+to find the optimum in terms of run time or the number of function
+evaluations, but it is often a method that works without having to
+learn too much about the properties of the objective function; in
+other words, it is often the quickest way to solve the problem if you
+include the researchers' time along with the time it takes to run. It
+also does not require gradient information.
+
+\begin{figure}
+\begin{center}
+\begin{tikzpicture}
+\coordinate (x1) at (0,0); \coordinate (x2) at (5,0); \coordinate (x3)
+at (2.5,4.33); \node[draw=red](x1n) at (x1) {$x_1$};
+\node[draw=red](x2n) at (x2) {$x_2$}; \node[draw=red](x3n) at (x3)
+     {$x_3$}; \draw (x1n) -- (x2n); \draw (x2n) -- (x3n); \draw (x3n)
+     -- (x1n);
+\end{tikzpicture}
+\end{center}
+\caption{A simplex is a generalization of a triangle to higher numbers
+  of dimensions, but here the 2-dimensional simplex is illustrated and
+  this is just a triangle. A simplex is not regular in general but in
+  many of these figures they are shown as regular to make things look
+  clearer. In the description of the downhill simplex algorithm the
+  vertices are ordered so $E(\mathbf{x}_1)\le E(\mathbf{x}_2)\le \ldots
+  E(\mathbf{x}_{n+1})$.\label{fig:simplex}}
+\end{figure}
+
+A simplex is a generalization of a triangle, just as a triangle is
+defined in two-dimensional space and has three vertices and a
+tetrahedron is defined in three-dimensional space and has four
+vertices, a $n$-dimensional simplex has $(n+1)$-vertices. Here we will
+be considering simplices in the space of parameter values $\mathbf{x}$
+so the vertices will be
+$\{\mathbf{x}_1,\mathbf{x}_2,\ldots,\mathbf{x}_{n+1}\}$. Simplices are
+not regular in general, the distances between the vertices need not be
+the same, but it is required that it isn't flat: if you remove one
+vertex the remaining $n$ vertices should be linearly independent.
+
+Now the idea of downhill simplex is that a simplex kind of ooches
+around looking for the minimum. It does this, roughly speaking, by
+taking the worst vertex, the one with the largest value of $E$, and
+replacing it with a better one. There are a number of different
+operations that achieve this, which is used depends on the 
+situation.
+
+\begin{figure}
+\begin{center}
+\begin{tikzpicture}
+\coordinate (x1) at (0,0); 
+\coordinate (x2) at (5,2); 
+\coordinate (x3) at (0,7); 
+\coordinate (xo) at (2.5,1);
+\coordinate (xr) at (5,-5);
+\node[draw=red](x1n) at (x1) {$x_1$};
+\node[draw=red](x2n) at (x2) {$x_2$}; 
+\node[draw=red](x3n) at (x3) {$x_3$}; 
+\node[draw=red](xon) at (xo) {$x_o$}; 
+\node[draw=red](xrn) at (xr) {$x_r$}; 
+\draw (x1n) -- (xon); 
+\draw (xon) -- (x2n); 
+\draw (x2n) -- (x3n); 
+\draw (x3n) -- (x1n);
+\draw[dashed] (x1n) -- (xrn);
+\draw[dashed] (x2n) -- (xrn);
+\end{tikzpicture}
+
+\end{center}
+\caption{The reflected point is constructed by reflecting the point
+  with the worst value of the objective function through the centroid
+  of the other points.\label{fig:reflection}}
+\end{figure}
+
+For simplicity let's imagine the vertices are in order according to the
+objective function, so
+\begin{equation}
+E(\mathbf{x}_1)\le E(\mathbf{x}_2)\le \ldots \le E(\mathbf{x}_{n+1})
+\end{equation}
+This order is done at the start of each iteration, though obvious in
+practice this doesn't involve renumbering, that is just done here for
+notational convenience. The idea generally is to replace
+$\mathbf{x}_{n+1}$. It is useful to define the centroid of the
+remaining points:
+\begin{equation}
+\mathbf{x}_o=\frac{1}{n}\sum_{i=1}^n\mathbf{x}_i
+\end{equation}
+Now let $\mathbf{x}_r$ be the point you get to by reflecting
+$\mathbf{x}_{n+1}$ in the $n$-dimensional simplex formed by the
+remaining points. It is
+\begin{equation}
+\mathbf{x}_r=\mathbf{x}_o+(\mathbf{x}_o-\mathbf{x}_{n+1})
+\end{equation}
+Often this will be a sort of \lq{}reasonable point\rq{} so that if it replaced
+$\mathbf{x}_{n+1}$ it would not be the best nor the worst, that is
+\begin{equation}
+E(\mathbf{x}_1)\le E(\mathbf{x}_r) < E(\mathbf{x}_n)
+\end{equation}
+In this case use it is used to replace $\mathbf{x}_{n+1}$:
+\begin{equation}
+\mathbf{x}_{n+1}\leftarrow \mathbf{x}_r
+\end{equation}
+This is called reflection and is shown in
+Fig.\ref{fig:reflection}.
+
+There are other cases. The reflected point $x_r$ might be better than all
+of the existing points, so
+\begin{equation}
+E(\mathbf{x}_r)<E(\mathbf{x}_1)
+\end{equation}
+in which case it is worth trying to go even further in the same
+direction by considering the so called expansion point $\mathbf{x}_e$:
+\begin{equation}
+\mathbf{x}_e=\mathbf{x}_o+2(\mathbf{x}_o-\mathbf{x}_{n+1})
+\end{equation}
+If $E(\mathbf{x}_e)<E(\mathbf{x}_r)$ then
+\begin{equation}
+\mathbf{x}_{n+1}\leftarrow \mathbf{x}_e
+\end{equation}
+otherwise
+\begin{equation}
+\mathbf{x}_{n+1}\leftarrow \mathbf{x}_r
+\end{equation}
+as before. The expansion point is illustrated in
+Fig.~\ref{fig:refexp}. One advantage of expansion is that it makes the
+simplex bigger; since going from the reflection point to the expansion
+point gives an even lower value of the objective function it is likely
+that the relevant features of the landscape are larger than the
+simplex. This is one advantage of the simplex approach, the size of
+the simplex changes to match scale of detail in the landscape.
+
+\begin{figure}
+\begin{center}
+\begin{tikzpicture}
+
+
+\coordinate (a) at (0,14);
+\node at (a) {\textbf{(a)}};
+
+\coordinate (b) at (8,14);
+\node at (b) {\textbf{(b)}};
+
+
+\coordinate (x1) at (0,9.33);
+\coordinate (x2) at (5,9.33);
+\coordinate (x3) at (2.5,13.66);
+\coordinate (x0) at (2.5,9.33);
+\coordinate (xr) at (2.5,5);
+
+\node[draw=red](x1n) at (x1) {$x_1$};
+\node[draw=red](x2n) at (x2) {$x_2$};
+\node[draw=red](x3n) at (x3) {$x_3$};
+\node[draw=red](x0n) at (x0) {$x_o$};
+\node[draw=red](xrn) at (xr) {$x_r$};
+
+\draw (x1n) -- (x0n);
+\draw (x0n) -- (x2n);
+
+\draw (xrn) -- (x2n);
+\draw (x1n) -- (xrn);
+
+\draw[dashed] (x2n) -- (x3n);
+\draw[dashed] (x3n) -- (x1n);
+
+\coordinate (x1r) at (8,9.33);
+\coordinate (x2r) at (13,9.33);
+\coordinate (x3r) at (10.5,13.66);
+\coordinate (x0r) at (10.5,9.33);
+\coordinate (xer) at (10.5,0.77);
+
+\node[draw=red](x1nr) at (x1r) {$x_1$};
+\node[draw=red](x2nr) at (x2r) {$x_2$};
+\node[draw=red](x3nr) at (x3r) {$x_3$};
+\node[draw=red](x0nr) at (x0r) {$x_o$};
+\node[draw=red](xenr) at (xer) {$x_e$};
+
+\draw (x1nr) -- (x0nr);
+\draw (x0nr) -- (x2nr);
+
+\draw (xenr) -- (x2nr);
+\draw (x1nr) -- (xenr);
+
+\draw[dashed] (x2nr) -- (x3nr);
+\draw[dashed] (x3nr) -- (x1nr);
+
+\end{tikzpicture}
+\end{center}
+
+\caption{This illustrates reflection \textbf{(a)} and expansion
+  \textbf{(b)}. In reflection the worst point is reflected through
+  $\mathbf{x}_0$, the center of the remaining points to give a new
+  point $\mathbf{x}_r$. Expansion goes from $\mathbf{x}_0$ to
+  $\mathbf{x}_r$ and continues the same distance again in the same
+  direction to give $\mathbf{x}_e$\label{fig:refexp} }
+\end{figure}
+
+Another possibility is that the reflection point would be the worst
+point if it replaced $\mathbf{x}_{n+1}$:
+\begin{equation}
+E(\mathbf{x}_r)>E(\mathbf{x}_n)
+\end{equation}
+Replacing $x_{n+1}$ with $x_r$ in this situation would lead to
+wasteful repetitive moves. It also implies that the simplex is too
+big, reflecting the worst point causes it to skip over a region around
+the points $\{\mathbf{x_1},\mathbf{x_2},\ldots,\mathbf{x}_n\}$ where
+there are lower values of the objective function. To deal with this a
+new point is defined, the contraction point
+\begin{equation}
+\mathbf{x}_c=\mathbf{x}_o-(\mathbf{x}_o-\mathbf{x}_{n+1})/2
+\end{equation}
+If $E(\mathbf{x}_c)<E(\mathbf{x}_{n+1})$ then
+\begin{equation}
+\mathbf{x}_{n+1}\leftarrow \mathbf{x}_c
+\end{equation}
+Finally, if this does not work, there is an emergency move called
+reduction which shrinks the whole simplex towards the best point. In
+this move all the points except $\mathbf{x}_1$ are replaced by the
+point half-way to $\mathbf{x}_1$ so
+\begin{equation}
+\mathbf{x}_i=(\mathbf{x}_i+\mathbf{x}_1)/2
+\end{equation}
+for $i=2,3,\ldots,(n+1)$. Reduction and contraction are both
+illustrated in Fig.~\ref{fig:conred} and a flow chart for the whole
+algorithm is given in Fig.~\ref{fig:flowchart}.
+
+Obviously after any of these moves the points are reordered, or in
+fact the best, worst and second worst points identified, and the
+algorithm repeats. However, practically, a stopping criterion needs to
+be devised. This usually says that the algorithm stops when the
+simplex vertices have values of the objective function that are
+extremely close to each other and are unchanging from iteration to
+iteration, where \lq{}extremely\rq{} here stands for some specified
+tolerance. Often a maximum number of iterations is also specified in
+case the algorithm doesn't converge.
+
+\begin{figure}
+\begin{center}
+\begin{tikzpicture}
+
+\coordinate (a) at (0,5);
+\node at (a) {\textbf{(a)}};
+
+\coordinate (b) at (8,5);
+\node at (b) {\textbf{(b)}};
+
+
+\coordinate (x1) at (0,0);
+\coordinate (x2) at (5,0);
+\coordinate (x3) at (2.5,4.33);
+\coordinate (x0) at (2.5,0);
+\coordinate (xc) at (2.5,2.17);
+
+\node[draw=red](x1n) at (x1) {$x_1$};
+\node[draw=red](x2n) at (x2) {$x_2$};
+\node[draw=red](x3n) at (x3) {$x_3$};
+\node[draw=red](x0n) at (x0) {$x_o$};
+\node[draw=red](xcn) at (xc) {$x_c$};
+
+\draw (x1n) -- (x0n);
+\draw (x0n) -- (x2n);
+
+\draw (xcn) -- (x2n);
+\draw (x1n) -- (xcn);
+
+\draw[dashed] (x2n) -- (x3n);
+\draw[dashed] (x3n) -- (x1n);
+
+\coordinate (x1) at (8,0);
+\coordinate (x2) at (13,0);
+\coordinate (x3) at (10.5,4.33);
+\coordinate (x2c) at (10.5,0);
+\coordinate (x3c) at (9.25,2.17);
+
+\node[draw=red](x1n) at (x1) {$x_1$};
+\node[draw=red](x2n) at (x2) {$x_2$};
+\node[draw=red](x3n) at (x3) {$x_3$};
+\node[draw=red](x2cn) at (x2c) {$x'_{2}$};
+\node[draw=red](x3cn) at (x3c) {$x'_{3}$};
+
+\draw (x1n) -- (x2cn);
+\draw (x1n) -- (x3cn);
+\draw (x2cn) -- (x3cn);
+
+\draw (x2cn)[dashed] -- (x2n);
+\draw (x3cn)[dashed] -- (x3n);
+\draw (x2n)[dashed] -- (x3n);
+
+
+\end{tikzpicture}
+\end{center}
+\caption{Contraction \textbf{(a)} and reduction \textbf{(b)}. In
+  contraction a new point $\mathbf{x}_c$ is chosen which is half way
+  between the worst point $\mathbf{x}_{n+1}$ and $\mathbf{x}_0$, the
+  centre of the remaining points. In reduction the triangle is shrunk
+  to half its size while keeping the best point.\label{fig:conred}}
+\end{figure}
+
+
+% Define block styles
+\tikzstyle{decision} = [diamond, draw, 
+    text width=4.5em, text badly centered, node distance=3cm, inner sep=0pt]
+\tikzstyle{block} = [rectangle, draw,
+    text width=5em, text centered, rounded corners, minimum height=4em]
+\tikzstyle{line} = [draw, -latex']
+\tikzstyle{cloud} = [draw, ellipse, node distance=3cm,
+    minimum height=2em] 
+
+
+\begin{figure}
+\begin{center}
+\begin{tikzpicture}[node distance = 2cm, auto]
+    % Place nodes
+    \node [block] (order){order $\mathbf{x}_1$ $\ldots$ $\mathbf{x}_{n+1}$};
+    \node [block, below of= order] (reflect){reflect: $\mathbf{x}_r$};
+    \node[decision, below of= reflect] (xr){is $\mathbf{x}_r$ the best point};
+    \node[block, right=1cm of xr] (expand){expand: $\mathbf{x}_e$};
+    \node[decision, right = 1cm of expand](xe){$E(\mathbf{x}_e)<E(\mathbf{x}_r)$};
+    \node[cloud,above of=xe](xn12xe){$\mathbf{x}_{n+1}\leftarrow \mathbf{x}_e$};
+    \node[cloud,below of=xe](xn12xr){$\mathbf{x}_{n+1}\leftarrow \mathbf{x}_r$};
+    \node[decision,below of=xr](xragain){$E(\mathbf{x}_r)>E(\mathbf{x}_n)$};
+    \node[block,below =1cm of xragain](contract){contract: $\mathbf{x}_c$};
+    \node[decision,right =0.7cm of contract](xc){$E(\mathbf{x}_c)<E(\mathbf{x}_{n+1})$};
+    \node[cloud,right =0.7cm of xc](xn12xc){$\mathbf{x}_{n+1}\leftarrow \mathbf{x}_c$};
+    \node[cloud,below of= xc](reduce){reduce};
+
+    % Draw edges
+    \path [line] (order) -> (reflect);
+    \path [line] (reflect) -> (xr);
+
+    \path [line] (expand) -> (xe);
+    \path [line] (xragain) -> node{yes}(contract);
+    \path[line] (contract) -> (xc);
+    \path [line] (xr) -> node{yes}(expand);    
+    \path [line] (xr) -> node{no}(xragain);    
+    \path [line] (xe) -> node {yes} (xn12xe);
+    \path [line] (xe) -> node {no} (xn12xr);
+    \path [line] (xragain) -> node {no} (xn12xr);
+    \path [line] (xc) -> node {yes} (xn12xc);
+    \path [line] (xc) -> node {no} (reduce);
+\end{tikzpicture}
+\end{center}
+\caption{A flow chart for the downhill simplex algorithm. At the
+  start, at the top, the points are put in order so that
+  $\mathbf{x}_{n+1}$ is the worst point and $\mathbf{x}_1$ is the
+  best. Next the reflected point is calculated to give $\mathbf{x}_r$
+  and $f(\mathbf{x}_r)$ is calculated. By comparing to the
+  $f(\mathbf{x_i})$ it can be decided if $\mathbf{x}_r$ is the best
+  point, that is $f(\mathbf{x}_r)<f(\mathbf{x}_1)$ and the flow chart
+  has two branches depending on the answer. This carries out until an
+  oval is reached, one or more points are changed and the process
+  repeats.\label{fig:flowchart}}
+\end{figure}
+
+The downhill simplex is a simple, intuitively appealing and robust
+algorithm. It is easy to code. It is often the thing that you try to
+see if you can avoid doing something cleverer and hence
+trickier. However, there are better algorithms, often the best
+algorithm that like this that don't use gradient information is
+Powell's method which involve choosing a direction and optimizating
+the objective function in that direction, there are very good
+algorithms for minimizing functions of one variable. Another direction
+is then chosen and the one-dimensional optimization is repeated, and
+so on until the algorithm converges. The details of the algorithms
+account for how the directions are chosen and how the one-dimensional
+optimization is performed.
+
+A big problem is what happens when there is more than one minimum: the
+local minima that act as a trap for the simplex on its way to the
+global minimum. One approach to this is to set the simplex off from
+lots of different initial conditions in the hope that one of them will
+reach the absolute minimum. Another method is to use something like
+simulated annealing or the genetic algorithm, these are designed to
+work well when the answer is hiding behind lots of local minima, but
+tends to be slow and finickity.
+
+\end{document}
