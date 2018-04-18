@@ -1,6 +1,6 @@
-%17_downhill_simplex.tex
-%notes for the course PandA2 COMS10001 taught at the University of Bristol
-%2016 Conor Houghton conor.houghton@bristol.ac.uk
+%18_downhill_simplex.tex
+%notes for the course COMS10007 taught at the University of Bristol
+%Conor Houghton conor.houghton@bristol.ac.uk
 
 %To the extent possible under law, the author has dedicated all copyright 
 %and related and neighboring rights to these notes to the public domain 
@@ -12,16 +12,21 @@
 \usepackage{graphicx}
 \usepackage{pstricks}
 \usepackage{listings}
+\usepackage{tikz-qtree}
 \usepackage{tikz}
 \usetikzlibrary{calc,positioning}
 \usetikzlibrary{shapes,arrows}
 \lstset{language=C}
-\pagestyle{headings}
-\markright{COMS10001 - PandA2 13\_downhill\_simplex - Conor}
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\lfoot{\texttt{github.com/conorhoughton/COMS10007}}
+\cfoot{}
+\rhead{\thepage}
+\lhead{COMS10007 - algorithms 18\_downhill\_simplex - Conor}
 
 \begin{document}
 
-\subsection*{17 - downhill simplex}
+\section*{18 - downhill simplex}
 
 Along with the data-based algorithms like searching and sorting,
 another broad category of algorithms relates to optimization. These
