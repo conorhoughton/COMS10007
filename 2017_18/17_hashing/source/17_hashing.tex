@@ -41,7 +41,7 @@ strategy is to look in each node in turn, stopping when you find the
 correct one. This is clearly very slow, $O(n)$ in fact, if $n$ is the
 number of nodes. Another strategy would be to make a big lookup table
 of all the indices and to use the alphabetic structure of the keys to
-seach it using a binary search algorithm, this would be smart but it
+search it using a binary search algorithm, this would be smart but it
 does rely on the keys having an ordering, they do here when the keys
 are words, but we want to solve the problem in a more general way.
 
@@ -69,7 +69,7 @@ crucial point is that the function always gives the same answer when
 applied to 'elbow', it is used to work out where to put the node
 associated with 'elbow' and later to access that node.
 
-One immeadiate challenge is that we might have some large words, like
+One immediate challenge is that we might have some large words, like
 zizzerzazzerzuzz, a creature in the Dr Seuss universe;
 \begin{equation}
 h(\mbox{\lq{}zizzerzazzerzuzz\rq{}})=295
@@ -137,7 +137,7 @@ $\{0,1,2,\ldots,255]$ to another. Different look up tables will
   takes a starting 8-bit value and bitwise xor's it with the first
   letter; this gives a \texttt{unsigned char} which is then replaced
   by another \texttt{unsigned char} using the look-up table. This new
-  value is bitwised xor'd with the second letter and all the steps
+  value is bitwise xor'd with the second letter and all the steps
   follow as before. This carries out until the end of the word, with,
   each time, the letter being bitwise xor'd with the value calculated
   during the previous step. Example code is give in
