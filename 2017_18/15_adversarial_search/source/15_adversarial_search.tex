@@ -466,7 +466,7 @@ float max_value(Node* a)
    if(terminal_node(a)) return utility(a);
 
    int i;
-   float v=big_number,u;
+   float v=-big_number,u;
    
    for(i=0;i<number_of_children(a);i++){
       u=min_value(get_child(a,i));
@@ -483,7 +483,7 @@ float min_value(Node* a)
    if(terminal_node(a)) return utility(a);
 
    int i;
-   float v=-big_number,u;
+   float v=big_number,u;
    
    for(i=0;i<number_of_children(a);i++){
       u=max_value(get_child(a,i));
