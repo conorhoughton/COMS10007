@@ -113,7 +113,7 @@ trees don't always have the same number of nodes on each side.
 \begin{center}
 \begin{tikzpicture}
 \Tree
-[.1     
+[.-1     
     [.0 
       \edge[]; {0}
       \edge[]; {0}
@@ -205,7 +205,7 @@ to do the LL rotation is given in Table~\ref{c_LL}.
 \begin{tikzpicture}
 \Tree
 [.20:2     
-  [.10:-1
+  [.10:1
     [.5:1
       \edge[]; {1:0}
       \edge[blank]; \node[blank]{};
@@ -371,7 +371,7 @@ one time.
 \begin{tikzpicture}
 \Tree
 [.30:2
-  [.10:1
+  [.10:-1
     \edge[]; {5:0}
          [.20:$x$
            \edge[]; \node[dashed]{15:0};

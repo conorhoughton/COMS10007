@@ -280,7 +280,7 @@ Aoife's turn, she is forced to choose a losing move and \textbf{112}:a
 is scored -1. Finally in Fig.~\ref{fig:nim-leaves_3} the scores have
 propagated to the top and we see that if Aoife takes the right option,
 $(0,2,2)$, she will win no matter what Brendan does, whereas if she
-takes the right option Brendan can win if he plays optimally.
+takes the left option Brendan can win if he plays optimally.
 
 
 \begin{figure}
@@ -466,7 +466,7 @@ float max_value(Node* a)
    if(terminal_node(a)) return utility(a);
 
    int i;
-   float v=big_number,u;
+   float v=-big_number,u;
    
    for(i=0;i<number_of_children(a);i++){
       u=min_value(get_child(a,i));
@@ -483,7 +483,7 @@ float min_value(Node* a)
    if(terminal_node(a)) return utility(a);
 
    int i;
-   float v=-big_number,u;
+   float v=big_number,u;
    
    for(i=0;i<number_of_children(a);i++){
       u=max_value(get_child(a,i));
