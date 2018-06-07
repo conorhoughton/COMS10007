@@ -5,12 +5,9 @@ of any given artist.
 
 See README.txt for more details.
 
-
 Example usage: python3 markov_chain.py --artist <your favorite artist> 
 
-
-
-By: Navya Zaveri
+By: Navya Zaveri, CS MEng Class of 2021.
 
 """
 
