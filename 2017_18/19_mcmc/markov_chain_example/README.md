@@ -78,7 +78,7 @@ Once we're done creating these mappings, we can generate a song out of it.
 
 * We then pick a word that occurs after `W5` and `W3` (in that order!).  There's a few options: `["END", "END", W3]`. Say we pick `W3`. Had we picked `END`, we would start the algorithm again on the next line. 
 
-* Repeat: pick a word that occurs after two succesive `W3 and W3` (hint: it's `W2` (the third line in the training data). Now pick a word that occurs after `W3` and `W2`...). 
+* Repeat: pick a word that occurs after two succesive `W3`'s (hint: it's `W2` (the third line in the training data). Now pick a word that occurs after `W3` and `W2`...). 
 
 
 * Keep doing this until you hit `END`, at which point you start the whole process on a new line.
