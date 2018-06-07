@@ -68,11 +68,15 @@ Once we're done creating these mappings, we can generate a song out of it.
 
 **Algorithm to generate a song:**
 
-* So our initial list of words looks likes this: `[W0, W5, W5]` We pick a random word, say `W5`. (`W5` has a higher likelihood of getting picked; this is *really the crux of the markov model, picking high probability sequences.*)
+* So our initial list of words looks likes this: `[W0, W5, W5]` We radomly pick a word, say `W5`. (`W5` has a higher likelihood of getting picked; this is *really the crux of the markov model, picking high probability sequences.*)
 
-* Now, we pick out a word that has a high likelihood of occurring AFTER W5. We can use `second` to see what words come after W5. `second[w5] = [W3, W6]`. Let's say we pick W3.
+	- Mathematically,  P(W5 | we've just started) = 2/3. So
 
-* We then pick a word that occurs after W5 and W3.  There's a few options: `["END", "END", W3]`. Say we pick W3. 
+* Now, we randomly pick a word that occurrs AFTER W5. We can use `second` to see what words come after W5. `second[w5] = [W3, W6]`. Let's say we pick W3.
+
+	- In this case, P(W3 | W5) = P(W6 | W5) = 0.5 
+
+* We then pick a word that occurs after W5 and W3.  There's a few options: `["END", "END", W3]`. Say we pick W3. Had we picked END, we would start the algorithm again on the next line. 
 
 * Repeat: pick a word that occurs after two succesive `W3 and W3` (hint: it's W2 (the third line in the training data). Now pick a word that occurs after `W3` and `W2`...). 
 
@@ -105,7 +109,7 @@ The relevant chunk of code:
 
 **Implementation drawbacks** 
 
-* It's not efficient, in terms of space complexity, to have such huge lists. Maybe a create a set of tuples, where the first element in the tuple is a word, and the second element is the frquency of that word? 
+* It's not efficient, in terms of space complexity, to have such huge lists. Maybe a create a set of tuples, where the first element in the tuple is a word, and the second element is the frequency of that word? 
 
 * Cache the songs to reduce uptime. Easily accomplished with redis.
 
