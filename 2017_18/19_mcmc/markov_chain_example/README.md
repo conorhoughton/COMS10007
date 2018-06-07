@@ -64,7 +64,7 @@ Like this:
 	...etc 
 </pre>
 
-Once we're done creating the mapping, we can generate a song out of it.
+Once we're done creating these mappings, we can generate a song out of it.
 
 **Algorithm to generate a song:**
 `
