@@ -2,7 +2,7 @@
 ## What is it?
 
 A *second-order markov model* that generate lyrics in the style 
-of a given  artist.
+of a given  artist. 
 
 
 ## How do you run it?
