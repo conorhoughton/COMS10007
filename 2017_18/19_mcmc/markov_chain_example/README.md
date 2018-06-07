@@ -68,15 +68,13 @@ Once we're done creating these mappings, we can generate a song out of it.
 
 **Algorithm to generate a song:**
 `
-* So our initial list of words looks likes this: `[W0, W5, W5]`
-
-We pick a random word, say `W5`. (`W5` has a higher likelihood of getting picked; this is *really the crux of the markov model*)
+* So our initial list of words looks likes this: `[W0, W5, W5]` We pick a random word, say `W5`. (`W5` has a higher likelihood of getting picked; this is *really the crux of the markov model, picking high probability sequences, given some data*)
 
 * Now, we pick out a word that has a high likelihood of occurring AFTER W5. We can use `second` to see what words come after W5. `second[w5] = [W3, W6]`. Let's say we pick W3.
 
 * We then pick a word that occurs <i> AFTER </i>  W5 and W3.  There's 2 options: `["END", "END", W3]`. Say we pick W3. 
 
-Repeat: pick a word that occurs after two succesive `W3 and W3` (hint: it's W2 (the third line in the training data). Now pick a word that occurs after `W3` and `W2`...). 
+* Repeat: pick a word that occurs after two succesive `W3 and W3` (hint: it's W2 (the third line in the training data). Now pick a word that occurs after `W3` and `W2`...). 
 
 
 * Keep doing this until you hit `END`, at which point you start the whole process on a new line.
