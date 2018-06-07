@@ -49,7 +49,7 @@ B) We create a mapping to represent that transitions from the first word to the 
 like this: 
 <pre> 
 	W0 -> [W1]
-	W5 -> [W6, W1]
+	W5 -> [W6, W3]
 </pre>
 	   
 In code, this mapping is called `second`. So `second[W0] = [W1]	`.
@@ -103,7 +103,7 @@ The relevant chunk of code:
 </code> 
 
 
-** Implementation drawbacks ** 
+**Implementation drawbacks** 
 
 * It's not efficient, in terms of space complexity, to have such huge lists. Maybe a create a set of tuples, where the first element in the tuple is a word, and the second element is the frquency of that word? 
 
