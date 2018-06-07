@@ -11,9 +11,6 @@ By: Navya Zaveri, CS MEng Class of 2021.
 
 """
 
-
-
-
 import numpy as np
 from collections import defaultdict
 import requests
