@@ -70,9 +70,9 @@ Once we're done creating these mappings, we can generate a song out of it.
 
 **Algorithm to generate a song:**
 
-* So, given the training data, our `initial` list likes this: `[W0, W5, W5]` We radomly pick a word, say `W5`. (`W5` has a higher likelihood of getting picked; this is *really the crux of the markov model, picking high probability sequences.*)
+* So, given the training data, our `initial` list likes this: `[W0, W5, W5]` We randomly pick a word, say `W5`. (`W5` has a higher likelihood of getting picked; this is *really the crux of the markov model, picking high probability sequences.*)
 
-	- Mathematically,  `P(W5 | we've just started) = 2/3. ` So it makes sense that, despite picking randomly, `W5` has a good chance of being selected. We will apply the same logic in the ensuing steps.
+	- Mathematically,  `P(W5 | we've just started) = 2/3. ` So it makes sense that, despite picking randomly, `W5` has a good chance of being selected. We apply the same logic in the ensuing steps.
 
 * Now, we randomly pick a word that occurrs AFTER `W5`. We can use `second` to see what words come after W5. `second[w5] = [W3, W6]`. Let's say we pick `W3`.
 
