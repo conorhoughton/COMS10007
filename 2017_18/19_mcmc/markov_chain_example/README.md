@@ -68,7 +68,7 @@ Once we're done creating these mappings, we can generate a song out of it.
 
 **Algorithm to generate a song:**
 
-* So our initial list of words looks likes this: `[W0, W5, W5]` We pick a random word, say `W5`. (`W5` has a higher likelihood of getting picked; this is *really the crux of the markov model, picking high probability sequences.)
+* So our initial list of words looks likes this: `[W0, W5, W5]` We pick a random word, say `W5`. (`W5` has a higher likelihood of getting picked; this is *really the crux of the markov model, picking high probability sequences.*)
 
 * Now, we pick out a word that has a high likelihood of occurring AFTER W5. We can use `second` to see what words come after W5. `second[w5] = [W3, W6]`. Let's say we pick W3.
 
@@ -84,7 +84,7 @@ Once we're done creating these mappings, we can generate a song out of it.
 
 * It's not efficient, in terms of space complexity, to have such huge lists. Maybe a create a set of tuples, where the first element in the tuple is a word, and the second element is the frquency of that word? 
 
-* Cache the songs to reduce uptime. Easily accmplished with redis.
+* Cache the songs to reduce uptime. Easily accomplished with redis.
 
 
 
