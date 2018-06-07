@@ -83,10 +83,10 @@ class MarkovChain:
         return song
 
 
-def main(artist):
+def main(artist,limit):
     print("Fetching data...")
 
-    artist_songs = fetch.songs_by_artist(artist)
+    artist_songs = fetch.songs_by_artist(artist,limit)
 
     if len(artist_songs)==0:
         raise Exception("I haven't heard of anything by " +artist+"! Try another artist.")
@@ -106,9 +106,12 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument('-m', '--artist', nargs='+', type=str,
                         help='What artist to train the markov model on?')
+
+    parser.add_argument('-n', '--limit', default= 45, type=int, help ="how many songs to train on?")
     args = parser.parse_args()
     if not args.artist:
         raise argparse.ArgumentError(args.artist,
                                      "Example usage: python3 markov_chain.py --artist <your favourite artist>")
     artist = " ".join(args.artist)
-    main(artist)
+    limit  = args.limit
+    main(artist, limit)
