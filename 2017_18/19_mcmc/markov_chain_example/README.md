@@ -25,7 +25,7 @@ Building a markov chain entails the following critical steps:
 
 The first part is only incidental and relatively simple to accomplish with libraries.
 
-The second part is the meat of it. It has two sub-steps: prepreocessing and song generation (in that order).
+The second part is the meat of it. It has two sub-steps: *prepreocessing* and the actual *song generation* (in that order).
 
 **Pre Processing**
 
