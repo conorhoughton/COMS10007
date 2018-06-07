@@ -79,6 +79,29 @@ Once we're done creating these mappings, we can generate a song out of it.
 
 * Keep doing this until you hit `END`, at which point you start the whole process on a new line.
 
+The relevant chunk of code:
+
+<code> 
+	<pre>
+	def generate_song(self, lines=10):
+	        song = ""
+		for line in range(lines):
+		    w0 = self._random_sampling(self.initial)
+		    w1 = self._random_sampling(self.second[w0])
+		    song += w0 + " "+w1
+		    while True:
+			w2 = self._random_sampling(self.transition[(w0, w1)])
+			w0 = w1
+			w1 = w2
+			if w2 == "END":
+			    song += "\n"
+			    break
+			else:
+			    song += " " + w2
+		return song
+		</pre>
+</code> 
+
 
 ** Implementation drawbacks ** 
 
