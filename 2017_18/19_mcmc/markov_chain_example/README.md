@@ -111,7 +111,7 @@ The relevant chunk of code:
 
 **Implementation drawbacks** 
 
-* It's not efficient, in terms of space complexity, to have such huge lists. Maybe a create a set of tuples, where the first element in the tuple is a word, and the second element is the frequency of that word? 
+* It's not efficient, in terms of space complexity, to have a word(s) that maps to huge lists of succeeding words. These lists have repeating words though; so it might be possible to instead have a set of tuples, where the first element in the tuple is a word, and the second element the count of that word?
 
 * Cache the songs to reduce uptime. Easily accomplished with redis.
 
