@@ -85,7 +85,7 @@ def main(artist,limit):
 
     artist_songs = fetch.songs_by_artist(artist,limit)
 
-    if len(artist_songs)==0:
+    if len(artist_songs) == 0:
         raise Exception("I haven't heard of anything by " +artist+ "! Try another artist.")
 
     print("Fetch successful. Now building markov model....")
