@@ -17,7 +17,7 @@ of a given  artist.
 Building a markov chain entails the following critical steps:
 
 
-* Collecting training data (in this case, a collection of songs made by said artist. See `fetch.py` )
+* Collecting training data (in this case, a collection of songs by said artist. See `fetch.py`.)
 
 * Buidling transitions across words 
 
@@ -76,7 +76,7 @@ We pick a random word, say `W5`. (`W5` has a higher likelihood of getting picked
 
 * We then pick a word that occurs <i> AFTER </i>  W5 and W3.  There's 2 options: `["END", "END", W3]`. Say we pick W3. 
 
-Repeat: pick a word that occurs after W3 and W3. 
+Repeat: pick a word that occurs after two succesive `W3 and W3` (hint: it's W2 (the third line in the training data). Now pick a word that occurs after `W3` and `W2`...). 
 
 
 * Keep doing this until you hit `END`, at which point you start the whole process on a new line.
