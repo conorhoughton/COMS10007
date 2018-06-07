@@ -11,6 +11,8 @@ of a given  artist.
 
 2) `python3 markov_chain.py --artist <your favorite artist> `
 
+(optionally: `python3 markov_chain.py --artist <your favorite artist> --limit <training_data_size>`
+
 
 ## How does it work??
 
