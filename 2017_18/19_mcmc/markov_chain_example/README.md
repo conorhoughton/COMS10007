@@ -1,7 +1,7 @@
 
 ## What is it?
 
-A **second-order markov model** that generate lyrics in the style 
+A *second-order markov model* that generate lyrics in the style 
 of a given  artist.
 
 
@@ -36,14 +36,14 @@ Given a collection of songs (aka "training data") by our favorite artist, we can
 
 	W5 W3 W3 W2 W5 END 
 
-</pre
+</pre>
 
 
 where `W[i]` is a word, `END` denotes a newline.
 
 We do the following:
 
-A) We make a list of all words that start out on a new line. That is, [W0, W5, W5]. Let's call this list `initial`
+A) We make a list of all words that start out on a new line. That is, `[W0, W5, W5]`. Let's call this list `initial`
 
 B) We create a mapping to represent that transitions from the first word to the second. So that looks something 
 like this: 
@@ -70,7 +70,7 @@ Once we're done creating the mapping, we can generate a song out of it.
 `
 * So our initial list of words looks likes this: `[W0, W5, W5]`
 
-We pick a random word, say W5. (W5 has a higher likelihood of getting picked; this is *really the crux of the markov model*)
+We pick a random word, say `W5`. (`W5` has a higher likelihood of getting picked; this is *really the crux of the markov model*)
 
 * Now, we pick out a word that has a high likelihood of occurring AFTER W5. We can use `second` to see what words come after W5. `second[w5] = [W3, W6]`. Let's say we pick W3.
 
@@ -79,7 +79,7 @@ We pick a random word, say W5. (W5 has a higher likelihood of getting picked; th
 Repeat: pick a word that occurs after W3 and W3. 
 
 
-* Keep doing this until you hit "END", at which point you start the whole process on a new line.
+* Keep doing this until you hit `END`, at which point you start the whole process on a new line.
 
 
 
