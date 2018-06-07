@@ -43,9 +43,9 @@ where `W[i]` is a word, `END` denotes a newline.
 
 We do the following:
 
-A) We make a list of all words that start out on a new line. That is, `[W0, W5, W5]`. Let's call this list `initial`
+*  We make a list of all words that start out on a new line. That is, `[W0, W5, W5]`. Let's call this list `initial`
 
-B) We create a mapping to represent that transitions from the first word to the second. So that looks something 
+* We create a mapping to represent that transitions from the first word to the second. So that looks something 
 like this: 
 <pre> 
 	W0 -> [W1]
@@ -54,7 +54,7 @@ like this:
 	   
 In code, this mapping is called `second`. So `second[W0] = [W1]	`.
 
-C) The most critical step: Because this is a second order markov chain, we create all possible mappings from **2** words to the next word 
+* The most critical step: Because this is a second order markov chain, we create all possible mappings from **2** words to the next word 
 <pre>
 Like this: 
 	(W0, W1) -> [W4]
@@ -72,7 +72,7 @@ Once we're done creating these mappings, we can generate a song out of it.
 
 	- Mathematically,  `P(W5 | we've just started) = 2/3. ` So it makes sense that, despite picking randomly, `W5` has a good chance of being selected. We will apply the same logic in the ensuing steps.
 
-* Now, we randomly pick a word that occurrs AFTER `W5`. We can use `second` to see what words come after W5. `second[w5] = [W3, W6]`. Let's say we pick W3.
+* Now, we randomly pick a word that occurrs AFTER `W5`. We can use `second` to see what words come after W5. `second[w5] = [W3, W6]`. Let's say we pick `W3`.
 
 	- `In this case, P(W3 | W5) = P(W6 | W5) = 0.5 `
 
