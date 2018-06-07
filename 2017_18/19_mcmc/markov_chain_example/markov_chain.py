@@ -58,11 +58,9 @@ class MarkovChain:
                         prev_word = words[word_index-1]
                         cur_word = words[word_index]
                         if word_index == len(words) - 1:
-                            self.transition[(prev_word, cur_word)].append(
-                                "END")
+                            self.transition[(prev_word, cur_word)].append("END")
 
-                        self.transition[(prev_prev_word, prev_word)].append(
-                            cur_word)
+                        self.transition[(prev_prev_word, prev_word)].append(cur_word)
 
     def _random_sampling(self, list_of_words):
         return np.random.choice(list_of_words)
