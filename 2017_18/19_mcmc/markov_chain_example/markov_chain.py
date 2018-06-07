@@ -70,7 +70,7 @@ class MarkovChain:
         for line in range(lines):
             w0 = self._random_sampling(self.initial)
             w1 = self._random_sampling(self.second[w0])
-            song += w0 + " "+w1
+            song += w0 + " " + w1
             while True:
                 w2 = self._random_sampling(self.transition[(w0, w1)])
                 w0 = w1
