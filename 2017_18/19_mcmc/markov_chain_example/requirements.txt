@@ -4,7 +4,7 @@ certifi==2018.4.16
 chardet==3.0.4
 idna==2.6
 lxml==4.2.1
-numpy==1.14.4
+numpy==1.22.0
 pkg-resources==0.0.0
 PyLyrics==1.1.0
 requests==2.18.4
